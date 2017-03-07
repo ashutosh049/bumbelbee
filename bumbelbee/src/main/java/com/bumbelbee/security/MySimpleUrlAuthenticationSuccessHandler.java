@@ -19,6 +19,7 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import com.bumbelbee.service.SecurityRole;
 import com.bumbelbee.service.UserService;
 
 

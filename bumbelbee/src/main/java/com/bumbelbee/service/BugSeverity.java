@@ -1,4 +1,4 @@
-package com.bumbelbee.security;
+package com.bumbelbee.service;
 
 public enum BugSeverity {
 

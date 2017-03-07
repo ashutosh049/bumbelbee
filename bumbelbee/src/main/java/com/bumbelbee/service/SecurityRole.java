@@ -1,4 +1,4 @@
-package com.bumbelbee.security;
+package com.bumbelbee.service;
 /**
  * Simple enum of Security Roles available.
  *

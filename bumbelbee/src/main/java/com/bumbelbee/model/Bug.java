@@ -12,8 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.bumbelbee.security.BugPlatform;
-import com.bumbelbee.security.BugSeverity;
+import com.bumbelbee.service.BugPlatform;
+import com.bumbelbee.service.BugSeverity;
 
 @Entity
 @Table(name = "Bug")
