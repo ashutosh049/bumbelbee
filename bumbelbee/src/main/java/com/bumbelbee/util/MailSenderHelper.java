@@ -15,7 +15,7 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import com.bumbelbee.model.User;
 
-@PropertySource({ "classpath:application.properties" })
+@PropertySource({ "classpath:bumbelbee.properties" })
 public class MailSenderHelper {
 
 	@Autowired

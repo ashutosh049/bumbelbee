@@ -46,7 +46,7 @@ import com.bumbelbee.util.MailSenderImpl;
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan("com.bumbelbee")
-@PropertySource({"classpath:application.properties"})
+@PropertySource({"classpath:bumbelbee.properties"})
 @EnableJpaRepositories("com.bumbelbee.repository")
 public class BmblbWebAppConfig {
 
