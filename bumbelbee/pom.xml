@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>bumbelbee</groupId>
-  <artifactId>bumbelbee</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>bumbelbee</name>
-  <url>http://www.bumbelbee.com</url>
-  
-  <properties>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>bumbelbee</groupId>
+	<artifactId>bumbelbee</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>bumbelbee</name>
+	<url>http://www.bumbelbee.com</url>
+
+	<properties>
 		<!-- Spring -->
 		<org.springframework.version>4.2.5.RELEASE</org.springframework.version>
 		<org.springframework.security.version>4.0.4.RELEASE</org.springframework.security.version>
@@ -45,6 +45,9 @@
 
 		<rest-assured.version>2.3.2</rest-assured.version>
 		<joda-time.version>2.3</joda-time.version>
+		
+		<!-- commons-lang3 -->
+		<commons-lang3.version>3.3.2</commons-lang3.version>		
 
 		<!-- Maven plugins -->
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
@@ -54,8 +57,8 @@
 		<cargo-maven2-plugin.version>1.4.8</cargo-maven2-plugin.version>
 
 	</properties>
-  
-  <dependencies>
+
+	<dependencies>
 
 		<!-- Spring Security -->
 		<dependency>
@@ -151,20 +154,17 @@
 			<artifactId>usertype.core</artifactId>
 			<version>3.0.0.CR1</version>
 		</dependency>
-		
+
 		<!-- Spring Data JPA -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
 			<version>${org.springframework.data.version}</version>
 		</dependency>
-	
+
 		<!-- Hibernate -->
-		<!-- <dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-core</artifactId> 
+			<version>${hibernate.version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -218,7 +218,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		
+
 
 
 		<!-- Thymeleaf -->
@@ -241,9 +241,9 @@
 			<version>2.5</version>
 		</dependency>
 		<dependency>
-		    <groupId>commons-codec</groupId>
-		    <artifactId>commons-codec</artifactId>
-		    <version>1.2</version>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.2</version>
 		</dependency>
 
 
@@ -288,12 +288,12 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>4.0.0.RELEASE</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
 		<dependency>
-		    <groupId>javax.ws.rs</groupId>
-		    <artifactId>javax.ws.rs-api</artifactId>
-		    <version>2.0</version>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.0</version>
 		</dependency>
 
 
@@ -363,12 +363,43 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.3.3</version>
+			<version>2.7.5</version>
 		</dependency>
 
+
+		<!-- SPring social login -->
+		<!-- <dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-core</artifactId>
+			<version>${spring-social.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-web</artifactId>
+			<version>${spring-social.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-facebook</artifactId>
+			<version>${spring-social-facebook.version}</version>
+		</dependency> -->
+
+	<dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-lang3</artifactId>
+		<version>${commons-lang3.version}</version>
+	</dependency>
+
+	<dependency>
+		<groupId>org.springframework.social</groupId>
+		<artifactId>spring-social-facebook</artifactId>
+		<version>2.0.3.RELEASE</version>
+	</dependency>
+		
+
 	</dependencies>
-  <build>
-    <finalName>bumbelbee</finalName>
-  </build>
-  <description>Bug reporting tool</description>
+	<build>
+		<finalName>bumbelbee</finalName>
+	</build>
+	<description>Bug reporting tool</description>
 </project>

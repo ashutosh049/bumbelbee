@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.bumbelbee.formbacking.bean.UploadForm;
 //import org.springframework.security.core.userdetails.User;
 import com.bumbelbee.model.User;
 
@@ -47,6 +49,7 @@ public class NavController {
 	@Secured("ROLE_USER")
 	@RequestMapping({ "/blank" })
 	public ModelAndView blank(final Model model, final Locale locale, HttpSession argHttpSession) {
+		model.addAttribute("uploadForm", new UploadForm());
 		return new ModelAndView("blank");
 	}
 

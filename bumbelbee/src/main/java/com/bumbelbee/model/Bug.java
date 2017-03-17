@@ -3,17 +3,23 @@ package com.bumbelbee.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.bumbelbee.service.BugPlatform;
 import com.bumbelbee.service.BugSeverity;
+import com.bumbelbee.service.BugStatus;
 
 @Entity
 @Table(name = "Bug")
@@ -26,6 +32,12 @@ public class Bug implements Serializable{
 	@Column(name = "bug_id")
 	private long bugId;
 	
+	@Column(name = "reported_by")
+	String reportedBy;
+	
+	@Column(name = "user_id")
+	long userId;
+	
 	@Column(name = "project_id")
 	String projectId;
 	
@@ -34,6 +46,9 @@ public class Bug implements Serializable{
 	
 	@Column(name = "severity")
 	BugSeverity severity;
+	
+	@Column(name = "status")
+	BugStatus status;
 	
 	@Column(name = "version")
 	String version;
@@ -55,6 +70,16 @@ public class Bug implements Serializable{
 	
 	@Column(name = "create_date")
 	Date createDate;
+	
+	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinTable(name = "bug_attachment", joinColumns = @JoinColumn(name = "bug_id"), inverseJoinColumns = @JoinColumn(name = "attachment_id"))
+	private Set<Attachment> attachments;
+	
+	@OneToMany(mappedBy = "bug",fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	private Set<Comment> comments;
+	
+	public Bug() {
+	}
 
 	public long getBugId() {
 		return bugId;
@@ -62,6 +87,14 @@ public class Bug implements Serializable{
 
 	public void setBugId(long bugId) {
 		this.bugId = bugId;
+	}
+
+	public String getReportedBy() {
+		return reportedBy;
+	}
+
+	public void setReportedBy(String reportedBy) {
+		this.reportedBy = reportedBy;
 	}
 
 	public String getProjectId() {
@@ -86,6 +119,14 @@ public class Bug implements Serializable{
 
 	public void setSeverity(BugSeverity severity) {
 		this.severity = severity;
+	}
+
+	public BugStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(BugStatus status) {
+		this.status = status;
 	}
 
 	public String getVersion() {
@@ -144,17 +185,28 @@ public class Bug implements Serializable{
 		this.createDate = createDate;
 	}
 
-	@Override
-	public String toString() {
-		return "Bug [bugId=" + bugId + ", projectId=" + projectId
-				+ ", synopsis=" + synopsis + ", severity=" + severity
-				+ ", version=" + version + ", platform=" + platform
-				+ ", securityVulnerability=" + securityVulnerability
-				+ ", description=" + description + ", assignto=" + assignto
-				+ ", ccto=" + ccto + ", createDate=" + createDate + "]";
+	public Set<Attachment> getAttachments() {
+		return attachments;
 	}
-	
-	
-	
+
+	public void setAttachments(Set<Attachment> attachments) {
+		this.attachments = attachments;
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
 	
 }

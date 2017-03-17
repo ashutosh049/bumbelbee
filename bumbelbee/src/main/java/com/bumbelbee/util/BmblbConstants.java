@@ -1,5 +1,7 @@
 package com.bumbelbee.util;
 
+import org.apache.commons.io.FileUtils;
+
 @SuppressWarnings("unused")
 public class BmblbConstants {
 
@@ -33,6 +35,9 @@ public class BmblbConstants {
 	public static final String TRANSPORT_PORT ="transport.port";
 	public static final String MAIL_BUG_PNG_IMAGE ="mail.bug.png.image";
 	public static final String MAIL_SMTP_SOCKETFACTORY_CLASS ="mail.smtp.socketFactory.class";
-
-
+	public static final String MULTIPART_RESOLVER_DEFAULT_ENCODING = "utf-8";
+	
+	public static final String ULOAD_DIRECTORY = "C:/bumbelbee/temp/";
+	public static final long MAX_UPLOAD_SIZE = FileUtils.ONE_MB * 256;
+	
 }

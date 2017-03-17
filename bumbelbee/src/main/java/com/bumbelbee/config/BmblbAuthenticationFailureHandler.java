@@ -1,4 +1,4 @@
-package com.bumbelbee.security;
+package com.bumbelbee.config;
 
 
 import java.io.IOException;
@@ -22,12 +22,12 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
-public class MySimpleAuthenticationFailureHandler  implements
+public class BmblbAuthenticationFailureHandler  implements
 AuthenticationFailureHandler {
 
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	
-	 public MySimpleAuthenticationFailureHandler() {
+	 public BmblbAuthenticationFailureHandler() {
 	        super();
 	    }
 	public void onAuthenticationFailure(HttpServletRequest request,

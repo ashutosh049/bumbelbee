@@ -76,7 +76,43 @@
 							<div class="col-xs-12">
 								<!-- PAGE CONTENT BEGINS -->
 
+								
+								<div class="col-sm-4">
+											<div class="widget-box">
+												<div class="widget-header">
+													<h4 class="widget-title">Custom File Input</h4>
 
+													<div class="widget-toolbar">
+														<a href="#" data-action="collapse">
+															<i class="ace-icon fa fa-chevron-up"></i>
+														</a>
+
+														<a href="#" data-action="close">
+															<i class="ace-icon fa fa-times"></i>
+														</a>
+													</div>
+												</div>
+
+												<div class="widget-body">
+													<div class="widget-main">
+														<form:form id="myFormUpload" modelAttribute="uploadForm" action="${contextPath}/myFormUpload" enctype="multipart/form-data">
+															<div class="form-group">
+																<div class="col-xs-12">
+																		<%--<form:input type="file" path="myfile" id="id-input-file-2" /> --%>
+																		<form:input multiple="multiple" type="file" path="myfile" id="id-input-file-3" />
+																</div>
+															</div>
+															<label>
+																<input type="checkbox" name="file-format" id="id-file-format" class="ace" />
+																<span class="lbl"> Allow only images</span>
+															</label>
+															<input type="submit" value="upload" />
+														</form:form>
+													</div>
+													<button type="button" id="sendfile">SEND</button>
+												</div>
+											</div>
+										</div>
 
 
 								<!-- PAGE CONTENT ENDS -->
@@ -113,7 +149,89 @@
 		<!-- ace scripts -->
 		<script src="${contextPath}/resources/js/ace-elements.min.js"></script>
 		<script src="${contextPath}/resources/js/ace.min.js"></script>
-
+		
 		<!-- inline scripts related to this page -->
+		<script type="text/javascript">
+		jQuery(function($) {
+			
+			$('#id-input-file-1 , #id-input-file-2').ace_file_input({
+				no_file:'No File ...',
+				btn_choose:'Choose',
+				btn_change:'Change',
+				droppable:false,
+				onchange:null,
+				thumbnail:false //| true | large
+				//whitelist:'gif|png|jpg|jpeg'
+				//blacklist:'exe|php'
+				//onchange:''
+				//
+			});
+			
+ 			$('#id-input-file-3').ace_file_input({
+				style: 'well',
+				btn_choose: 'Drop files here or click to choose',
+				btn_change: null,
+				no_icon: 'ace-icon fa fa-cloud-upload',
+				droppable: true,
+				thumbnail: 'small',
+				preview_error : function(filename, error_code) {}
+		
+			}).on('change', function(){
+			});
+ 			
+			
+			$('#modal-form input[type=file]').ace_file_input({
+					style:'well',
+					btn_choose:'Drop files here or click to choose',
+					btn_change:null,
+					no_icon:'ace-icon fa fa-cloud-upload',
+					droppable:true,
+					thumbnail:'large'
+				});
+			
+		/* ajax upload */	
+			var context = "<%=request.getContextPath()%>";
+
+			$('#sendfile').on('click',function(e){
+				//$('#myFormUpload').submit();
+				var data = new FormData();
+				
+				jQuery.each(jQuery('#id-input-file-3')[0].files, function(i, file) {
+				    data.append('file-'+i, file);
+				});
+				
+				 $.ajax({
+					method : "POST",
+					url : ''+context+"/myFormUpload?_csrf=${_csrf.token}",
+					data : JSON.stringify(data),
+					contentType : 'application/json; charset=UTF-8',
+					dataType : 'json',
+					success : function(bug) {
+						if(bug== null){
+							console.log('something went wrong.. try again');
+						}
+						console.log("\n--success---\n");
+						$.each( bug, function( key, value ) {
+							  console.log(key+" : "+value);
+							});
+					},
+					error : function(xhr) {
+						console.log('something went wrong.. try again\n'+xhr);
+						$.each( xhr, function( key, value ) {
+							  console.log(key+" : "+value);
+							});
+					},
+					success:(function(bug){
+						var context = "<%=request.getContextPath()%>";
+						window.location=context+'/unauth/bug/show-bug?Id='+bug.bugId;
+						  
+					})
+				});
+			});
+			
+			
+		});
+		</script>
+	
 	</body>
 </html>

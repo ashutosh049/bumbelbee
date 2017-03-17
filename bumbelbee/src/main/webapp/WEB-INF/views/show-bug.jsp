@@ -63,7 +63,7 @@
 		<![endif]-->
 
 <style type="text/css">
-#main_content {
+.page-content {
 	background-image: url(${contextPath}/resources/images/avatars/bg_1.gif);
 	background-repeat: repeat;
 	background-attachment: scroll;
@@ -101,25 +101,27 @@
 									<div class="widget-box transparent">
 										<div class="widget-header widget-header-bg">
 											<h3 class="widget-title smaller">
-												<i class="ace-icon fa fa-bug bigger-110"></i>
+												
 												<a
 													href="${contextPath}/unauth/bug/show-bug?Id=${searchedBug.bugId}">
-													<b><u>Bug#${searchedBug.bugId}</u></b> <span class="black">${searchedBug.synopsis}</span>
+													<span class="black">${searchedBug.synopsis}</span>
 												</a> 
 												<span class="widget-toolbar"> 
-													<a href="#" data-action="reload">
-														<i class="ace-icon fa fa-refresh"></i>
-													</a>
+												<c:if test="${searchedBug.status=='OPEN' || searchedBug.status=='REOPEN'}">
+<!-- 												<i class="ace-icon fa fa-bug bigger-110 green"></i> -->
+													<span class="label label-xlg label-danger arrowed-in">OPEN</span>												
+												</c:if>
 												</span>
 												<span class="widget-toolbar black">
-												<small> 2017-02-22 17:34:07 IST</small></span> 
+													<h4><a href="${contextPath}/unauth/bug/show-bug?Id=${searchedBug.bugId}"><b>#${searchedBug.bugId}657896</b></a></h4>
+												</span> 
 
 											</h3>
 										</div>
 
 										<div class="widget-body">
 
-											<div class="widget-toolbox" id="widget-toolbox-1"
+											<!-- <div class="widget-toolbox" id="widget-toolbox-1"
 												style="background: none; border: none;">
 												<div class="btn-toolbar">
 													<div class="btn-group">
@@ -164,16 +166,23 @@
 														</label>
 													</div>
 												</div>
-											</div>
+											</div> -->
 
 											<div class="widget-main">
 												
 												<!-- Assigned to -->
-												<span class="blue">Assigned To:</span><br>
+												<%-- <span class="blue">Assigned To:</span><br>
 												<c:forEach var="asgn" items="${searchedBug.assignto}">
 													<span class="badge"><c:out value="${asgn}"/></span>
 												</c:forEach>
-												<br><br><br>
+												<br>
+												<span class="blue">Cced To:</span><br>
+												<c:forEach var="ccto" items="${searchedBug.ccto}">
+													<span class="badge"><c:out value="${ccto}"/></span>
+												</c:forEach>
+												
+												<br><br><br> --%>
+												
 												<!-- DESCRIPTION-BODY -->
 												<p>${searchedBug.description}</p>
 												
@@ -233,59 +242,23 @@
 
 												<!-- Attachments -->
 												<div class="message-attachment clearfix">
-													<div class="attachment-title">
-														<span class="blue bolder bigger-110">Attachments</span>
-														&nbsp; <span class="grey">(2 files, 4.5 MB)</span>
-
-														<div class="inline position-relative">
-															<a href="#" data-toggle="dropdown"
-																class="dropdown-toggle"> &nbsp; <i
-																class="ace-icon fa fa-caret-down bigger-125 middle"></i>
-															</a>
-
-															<ul class="dropdown-menu dropdown-lighter">
-																<li><a href="#">Download all as zip</a></li>
-
-																<li><a href="#">Display in slideshow</a></li>
-															</ul>
-														</div>
-													</div>
-
 													&nbsp;
 													<ul class="attachment-list pull-left list-unstyled">
-														<li><a href="#" class="attached-file"> <i
-																class="ace-icon fa fa-file-o bigger-110"></i> <span
-																class="attached-name">Document1.pdf</span>
-														</a> <span class="action-buttons"> <a href="#"> <i
-																	class="ace-icon fa fa-download bigger-125 blue"></i>
-															</a> <a href="#"> <i
-																	class="ace-icon fa fa-trash-o bigger-125 red"></i>
-															</a>
-														</span></li>
-
-														<li><a href="#" class="attached-file"> <i
-																class="ace-icon fa fa-film bigger-110"></i> <span
-																class="attached-name">Sample.mp4</span>
-														</a> <span class="action-buttons"> <a href="#"> <i
-																	class="ace-icon fa fa-download bigger-125 blue"></i>
-															</a>
-														</span></li>
+														<c:forEach items="${attachmentList}" var="attachment">
+															<li>
+																<a href="${contextPath}/unauth/bug/download/attachment/${attachment.key}" class="attached-file"> 
+																	<i class="ace-icon fa fa-paperclip bigger-110"></i> 
+																	<span class="attached-name">${attachment.value}</span>
+																</a> 
+																<span class="action-buttons">
+																	 <a href="${contextPath}/unauth/bug/download/attachment/${attachment.key}"> 
+																	 	<i class="ace-icon fa fa-download bigger-125 gray"></i>
+																	</a>
+																</span>
+															</li>
+														</c:forEach>
 													</ul>
-
-													<div class="attachment-images pull-right">
-														<div class="vspace-4-sm"></div>
-
-														<div>
-															<img width="36" alt="image 4"
-																src="${contextPath}/resources/images/gallery/thumb-4.jpg" />
-															<img width="36" alt="image 3"
-																src="${contextPath}/resources/images/gallery/thumb-3.jpg" />
-															<img width="36" alt="image 2"
-																src="${contextPath}/resources/images/gallery/thumb-2.jpg" />
-															<img width="36" alt="image 1"
-																src="${contextPath}/resources/images/gallery/thumb-1.jpg" />
-														</div>
-													</div>
+													
 												</div>
 
 												<br/><br/><br/><br/><br/>
@@ -295,169 +268,89 @@
 												<!-- TIMELINE-2 -->
 												<div class="row">
 													<div class="col-xs-12 col-sm-8">
+														
+														&nbsp;
+
+														<!-- COMMENTS -->
+														<c:forEach var="comment" items="${commentList}">
+															<div class="widget-box transparent">
+																<div class="widget-header widget-header-small">
+																	<h5 class="widget-title smaller">
+																		<a href="#" class="blue">${comment.commentedBy}</a>
+																		<!--<span class="grey">reviewed a product</span> -->
+																	</h5>
+
+																	<span class="widget-toolbar"> <a href="#"
+																		data-action="collapse"> <i
+																			class="ace-icon fa fa-chevron-up"></i>
+																	</a>
+																	</span> <span class="widget-toolbar no-border">
+																		${comment.createDate} </span>
+																</div>
+
+																<div class="widget-body"
+																	style="background-color: #dcdcdc99;">
+																	<div class="widget-main">
+																		${comment.description}
+																		<div class="space-6"></div>
+																		<div class="message-attachment clearfix">
+																			&nbsp;
+																			<ul class="attachment-list pull-left list-unstyled">
+																				<c:if test="${comment.attachments != null}">
+																				<c:forEach items="${comment.attachments}" var="cmtattachment">
+																					<li>
+																					<a href="${contextPath}/unauth/bug/download/attachment/${cmtattachment.attachmentId}"
+																						class="attached-file">
+																						 <i class="ace-icon fa fa-paperclip bigger-110"></i> 
+																						 <span
+																							class="attached-name">${cmtattachment.attachmentName}</span>
+																					</a> 
+																					<span class="action-buttons"> <a
+																							href="${contextPath}/unauth/bug/download/attachment/${attachment.attachmentId}">
+																								<i class="ace-icon fa fa-download bigger-125 gray"></i>
+																						</a>
+																					</span></li>
+																				</c:forEach>
+																				</c:if>
+																			</ul>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</c:forEach>
+
+
+
+														<!-- COMMENT NEW -->
+														<div class="space-6"></div>
+														<div class="space-6"></div>
 														<div class="widget-box transparent">
 															<div class="widget-header widget-header-small">
 																<h5 class="widget-title smaller">
-																	<a href="#" class="blue">Yayati</a>
-																	<!--<span class="grey">reviewed a product</span> -->
+																	<a href="#" class="blue">Add comment :</a>
 																</h5>
 
 																<span class="widget-toolbar"> <a href="#"
 																	data-action="collapse"> <i
 																		class="ace-icon fa fa-chevron-up"></i>
 																</a>
-																</span> <span class="widget-toolbar no-border">
-																	2017-02-22 17:34:07 IST </span>
+																</span>
 															</div>
 
 															<div class="widget-body"
 																style="background-color: #dcdcdc99;">
 																<div class="widget-main">
-																	<p>Build: 1.1.9</p>
-
-																	<p>Store: 100 Reg: 1</p>
-
-																	<p>Actual: User is landed directly on to Manually
-																		authorize the Check screen. &quot;To manually
-																		authorize the Check, call 1-800- CREDITCARD&quot;
-																		message is displayed.</p>
-
-																	<p>
-																		Expected: The tender authorization process is
-																		currently offline screen should be displayed where
-																		user can select Manual button to authorize manually.<br />&quot;To
-																		manually authorize the Check, call 1-800- CHECK&quot;
-																		message should be displayed.
-																	</p>
-
-																	<p>Please find the attached screen shots from ABC
-																		V15 , Base V15 and Xstore log.</p>
-																	<div class="space-6"></div>
-																</div>
-															</div>
-														</div>
-														&nbsp;
-
-														<!-- COMMENT 2 -->
-														<div class="widget-box transparent">
-															<div class="widget-header widget-header-small">
-																<h3 class="widget-title smaller">
-																	<a href="#" class="blue">Ashutosh</a>
-																	<!--<span class="grey">reviewed a product</span> -->
-																</h3>
-
-																<span class="widget-toolbar"> <a href="#"
-																	data-action="collapse"> <i
-																		class="ace-icon fa fa-chevron-up"></i>
-																</a>
-																</span> <span class="widget-toolbar no-border">
-																	2017-02-22 18:02:07 IST </span>
-															</div>
-
-															<div class="widget-body"
-																style="background-color: #dcdcdc99;">
-																<div class="widget-main">
-																	<p>Basic useful feature list:</p>
-
-																	<ul>
-																		<li>Ctrl+S / Cmd+S to save the file</li>
-																		<li>Ctrl+Shift+S / Cmd+Shift+S to choose to save
-																			as Markdown or HTML</li>
-																		<li>Drag and drop a file into here to load it</li>
-																		<li>File contents are saved in the URL so you can
-																			share files</li>
-																	</ul>
-
-																	<p>I&#39;m no good at writing sample / filler text,
-																		so go write something yourself.</p>
-
-																	<p>Look, a list!</p>
-
-																	<p>
-																		<code>javascript $(function(){
-																			$(&#39;div&#39;).html(&#39;I am a div.&#39;); }); </code>
-																	</p>
-
-																	<p>
-																		This is <a
-																			href="https://github.com/jbt/markdown-editor">on
-																			GitHub</a> so let me know if I&#39;ve b0rked it
-																		somewhere.
-																	</p>
-
-																	<h5>Stuff used to make this:</h5>
-
-																	<ul>
-																		<li><a
-																			href="https://github.com/markdown-it/markdown-it">markdown-it</a>
-																			for Markdown parsing</li>
-																		<li><a href="http://codemirror.net/">CodeMirror</a>
-																			for the awesome syntax-highlighted editor</li>
-																		<li><a
-																			href="http://softwaremaniacs.org/soft/highlight/en/">highlight.js</a>
-																			for syntax highlighting in output code blocks</li>
-																		<li><a
-																			href="https://github.com/dankogai/js-deflate">js-deflate</a>
-																			for gzipping of data to make it fit in URLs</li>
-																	</ul>
-																	<div class="space-6"></div>
-																	<div class="message-attachment clearfix">
-													<div class="attachment-title">
-														<span class="blue bolder bigger-110">Attachments</span>
-														&nbsp; <span class="grey">(2 files, 4.5 MB)</span>
-
-														<div class="inline position-relative">
-															<a href="#" data-toggle="dropdown"
-																class="dropdown-toggle"> &nbsp; <i
-																class="ace-icon fa fa-caret-down bigger-125 middle"></i>
-															</a>
-
-															<ul class="dropdown-menu dropdown-lighter">
-																<li><a href="#">Download all as zip</a></li>
-
-																<li><a href="#">Display in slideshow</a></li>
-															</ul>
-														</div>
-													</div>
-
-													&nbsp;
-													<ul class="attachment-list pull-left list-unstyled">
-														<li><a href="#" class="attached-file"> <i
-																class="ace-icon fa fa-file-o bigger-110"></i> <span
-																class="attached-name">Xstore config doc.pdf</span>
-														</a> <span class="action-buttons"> <a href="#"> <i
-																	class="ace-icon fa fa-download bigger-125 blue"></i>
-															</a> <a href="#"> <i
-																	class="ace-icon fa fa-trash-o bigger-125 red"></i>
-															</a>
-														</span></li>
-
-														<li><a href="#" class="attached-file"> <i
-																class="ace-icon fa fa-film bigger-110"></i> <span
-																class="attached-name">xstore-log.txt</span>
-														</a> <span class="action-buttons"> <a href="#"> <i
-																	class="ace-icon fa fa-download bigger-125 blue"></i>
-															</a> <a href="#"> <i
-																	class="ace-icon fa fa-trash-o bigger-125 red"></i>
-															</a>
-														</span></li>
-													</ul>
-
-													<div class="attachment-images pull-right">
-														<div class="vspace-4-sm"></div>
-
-														<div>
-															<img width="36" alt="image 4"
-																src="${contextPath}/resources/images/avatars/avatar.png" />
-															<img width="36" alt="image 3"
-																src="${contextPath}/resources/images/avatars/avatar1.png" />
-															<img width="36" alt="image 2"
-																src="${contextPath}/resources/images/avatars/avatar3.png" />
-															<img width="36" alt="image 1"
-																src="${contextPath}/resources/images/avatars/avatar4.png" />
-														</div>
-													</div>
-												</div>
+																	<textarea id="commentdescription" name="commentdescription" data-provide="markdown" data-iconlibrary="fa" rows="10" placeholder="Enter your comments..."></textarea>
+																	<form:form id="bugcommentform" modelAttribute="commentForm" action="${contextPath}/unauth/bug/postcomment/${searchedBug.bugId}" enctype="multipart/form-data">
+																		<div class="form-group">
+																				<form:hidden path="description" id="description" />
+																				<form:input multiple="multiple" type="file" path="myfile" id="id-input-file-3" />
+																				<button class="btn btn-success btn-sm" type="submit" id="bugcommentsbmt">
+																					Post
+																					<i class="ace-icon fa fa-send icon-on-right"></i>
+																				</button>
+																		</div>
+																	</form:form>
 																</div>
 															</div>
 														</div>
@@ -551,7 +444,26 @@
 
 	<script type="text/javascript">
 		jQuery(function($) {
-
+			$('.bmblbnavstabs').removeClass('active');
+			$('#show-bug').addClass('active');
+			
+			$('#id-input-file-3').ace_file_input({
+				style: 'well',
+				btn_choose: 'Drop files here or click to choose',
+				btn_change: null,
+				no_icon: 'ace-icon fa fa-cloud-upload',
+				droppable: true,
+				thumbnail: 'small',
+				whitelist:'gif|png|jpg|jpeg',
+				blacklist:'exe|php|txt|json|pdf',
+				before_change:function(files, dropped) {
+					return true;
+				},
+				preview_error : function(filename, error_code) {
+					alert(filename+" : "+error_code);
+				}
+			});
+			
 			//data for tree element
 			var category = {
 
@@ -766,6 +678,20 @@
 		});
 	</script>
 
+	<script type="text/javascript">
+		jQuery(function($) {
+			
+			$('#bugcommentsbmt').click(function(e){
+				$(this).attr('disabled','disabled');
+				e.preventDefault();
+				var desc = $("#commentdescription").data('markdown').parseContent();
+				console.log(desc);
+				$("#description").val(desc);
+				$('#bugcommentform').submit();
+			});
+			
+		});
+	</script>
 </body>
 
 </html>

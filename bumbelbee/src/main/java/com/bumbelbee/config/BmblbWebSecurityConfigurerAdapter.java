@@ -1,4 +1,4 @@
-package com.bumbelbee.security;
+package com.bumbelbee.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,13 +13,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.connect.mem.InMemoryUsersConnectionRepository;
+import org.springframework.social.connect.web.ProviderSignInController;
+
 /**
  * Spring Security Configuration.
  */
 @Configuration
 @EnableWebSecurity
-//@ImportResource({ "classpath:webSecurityConfig.xml" })
 public class BmblbWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -27,10 +30,10 @@ public class BmblbWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdap
 	
 	
 	@Autowired
-	MySimpleUrlAuthenticationSuccessHandler mySimpleUrlAuthenticationSuccessHandler;
+	BmblbAuthenticationSuccessHandler successHandler;
 	
 	@Autowired
-	MySimpleAuthenticationFailureHandler mySimpleAuthenticationFailureHandler;
+	BmblbAuthenticationFailureHandler failureHandler;
 	
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -40,6 +43,20 @@ public class BmblbWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdap
 	
 	@Autowired
 	AccessDeniedHandler accessDeniedHandler;
+	
+	/*
+	 -----Spring Social connect--------  
+	
+	@Autowired
+	private ConnectionFactoryLocator connectionFactoryLocator;
+
+	@Autowired
+	private UsersConnectionRepository usersConnectionRepository;
+
+	@Autowired
+	private FacebookConnectionSignup facebookConnectionSignup;
+	
+	*/
 
 
 	protected void configure(HttpSecurity http) throws Exception {
@@ -55,9 +72,9 @@ public class BmblbWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdap
 				.and()
 			.formLogin()
 					.loginPage("/login")
-					.successHandler(mySimpleUrlAuthenticationSuccessHandler)
+					.successHandler(successHandler)
 					.failureUrl("/login?failed=login-error")
-					.failureHandler(mySimpleAuthenticationFailureHandler)
+					.failureHandler(failureHandler)
 					.usernameParameter("username")
 					.passwordParameter("password")
 					.permitAll()
@@ -85,5 +102,10 @@ public class BmblbWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdap
         return super.authenticationManagerBean();
     }
 	
+	/* @Bean
+	    public ProviderSignInController providerSignInController() {
+	        ((InMemoryUsersConnectionRepository) usersConnectionRepository).setConnectionSignUp(facebookConnectionSignup);
+	        return new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, new FacebookSignInAdapter());
+	    }*/
 
 }

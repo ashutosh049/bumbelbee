@@ -1,4 +1,4 @@
-package com.bumbelbee.init;
+package com.bumbelbee.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,13 +9,13 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 @Configuration
 @EnableWebMvc
-public class BmblbWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
+public class BmblbWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter{
+
 
 	public BmblbWebMvcConfigurerAdapter() {
 		super();
@@ -50,5 +50,6 @@ public class BmblbWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
 		repository.setSessionAttributeName("_csrf");
 		return repository;
 	}
-
+	
+	
 }

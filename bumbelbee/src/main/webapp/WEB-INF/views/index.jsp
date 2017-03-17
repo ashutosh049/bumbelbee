@@ -715,7 +715,8 @@
 	<!-- inline scripts related to this page -->
 	<script type="text/javascript">
 		jQuery(function($) {
-
+			$('.bmblbnavstabs').removeClass('active');
+			$('#index').addClass('active');
 			//data for tree element
 			var category = {
 				

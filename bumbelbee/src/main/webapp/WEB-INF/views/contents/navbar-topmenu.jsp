@@ -313,7 +313,7 @@
 							<input type="text" placeholder="search" id="Id" name="Id"/>
 						</div>
 						<button type="submit" class="btn btn-mini btn-info2">
-							<i class="ace-icon fa fa-search icon-only bigger-110"></i>
+							<i class="ace-icon fa fa-search icon-only bigger-105"></i>&nbsp;search
 						</button>
 					</form>
 				</nav>

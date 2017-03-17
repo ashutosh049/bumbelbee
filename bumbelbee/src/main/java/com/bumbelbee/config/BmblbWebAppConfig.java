@@ -1,5 +1,4 @@
-package com.bumbelbee.init;
-
+package com.bumbelbee.config;
 
 import java.util.Locale;
 import java.util.Properties;
@@ -34,22 +33,18 @@ import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.bumbelbee.helper.ModuleControllerHelper;
-import com.bumbelbee.security.MySimpleAuthenticationFailureHandler;
-import com.bumbelbee.security.MySimpleUrlAuthenticationSuccessHandler;
 import com.bumbelbee.util.BmblbConstants;
 import com.bumbelbee.util.MailSender;
 import com.bumbelbee.util.MailSenderHelper;
 import com.bumbelbee.util.MailSenderImpl;
 
 @Configuration
-
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan("com.bumbelbee")
-@PropertySource({"classpath:bumbelbee.properties"})
+@PropertySource({ "classpath:bumbelbee.properties" })
 @EnableJpaRepositories("com.bumbelbee.repository")
 public class BmblbWebAppConfig {
-
 
 	@Resource
 	private Environment env;
@@ -58,10 +53,13 @@ public class BmblbWebAppConfig {
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-		dataSource.setDriverClassName(env.getRequiredProperty(BmblbConstants.DB_DRIVER));
+		dataSource.setDriverClassName(env
+				.getRequiredProperty(BmblbConstants.DB_DRIVER));
 		dataSource.setUrl(env.getRequiredProperty(BmblbConstants.DB_URL));
-		dataSource.setUsername(env.getRequiredProperty(BmblbConstants.DB_USERNAME));
-		dataSource.setPassword(env.getRequiredProperty(BmblbConstants.DB_PASSWORD));
+		dataSource.setUsername(env
+				.getRequiredProperty(BmblbConstants.DB_USERNAME));
+		dataSource.setPassword(env
+				.getRequiredProperty(BmblbConstants.DB_PASSWORD));
 
 		return dataSource;
 	}
@@ -70,102 +68,125 @@ public class BmblbWebAppConfig {
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactoryBean.setDataSource(dataSource());
-		entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistence.class);
-		entityManagerFactoryBean.setPackagesToScan(env.getRequiredProperty(BmblbConstants.ENTITYMANAGER_PACKAGES_TO_SCAN));
-		
+		entityManagerFactoryBean
+				.setPersistenceProviderClass(HibernatePersistence.class);
+		entityManagerFactoryBean
+				.setPackagesToScan(env
+						.getRequiredProperty(BmblbConstants.ENTITYMANAGER_PACKAGES_TO_SCAN));
+
 		entityManagerFactoryBean.setJpaProperties(hibProperties());
-		
+
 		return entityManagerFactoryBean;
 	}
 
 	private Properties hibProperties() {
 		Properties properties = new Properties();
-		properties.put(BmblbConstants.HIBERNATE_DIALECT,env.getRequiredProperty(BmblbConstants.HIBERNATE_DIALECT));
-		properties.put(BmblbConstants.HIBERNATE_SHOW_SQL,env.getRequiredProperty(BmblbConstants.HIBERNATE_SHOW_SQL));
-        properties.put(BmblbConstants.HIBERNATE_FORMAT_SQL, env.getRequiredProperty(BmblbConstants.HIBERNATE_FORMAT_SQL));
-		properties.put(BmblbConstants.HIBERNATE_HBM2DDL_AUTO, env.getRequiredProperty(BmblbConstants.HIBERNATE_HBM2DDL_AUTO));
+		properties.put(BmblbConstants.HIBERNATE_DIALECT,
+				env.getRequiredProperty(BmblbConstants.HIBERNATE_DIALECT));
+		properties.put(BmblbConstants.HIBERNATE_SHOW_SQL,
+				env.getRequiredProperty(BmblbConstants.HIBERNATE_SHOW_SQL));
+		properties.put(BmblbConstants.HIBERNATE_FORMAT_SQL,
+				env.getRequiredProperty(BmblbConstants.HIBERNATE_FORMAT_SQL));
+		properties.put(BmblbConstants.HIBERNATE_HBM2DDL_AUTO,
+				env.getRequiredProperty(BmblbConstants.HIBERNATE_HBM2DDL_AUTO));
 		return properties;
 	}
 
 	@Bean
 	public JpaTransactionManager transactionManager() {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+		transactionManager.setEntityManagerFactory(entityManagerFactory()
+				.getObject());
 		return transactionManager;
 	}
 
 	@Bean
 	public UrlBasedViewResolver setupViewResolver() {
 		UrlBasedViewResolver resolver = new UrlBasedViewResolver();
-		resolver.setPrefix(env.getRequiredProperty(BmblbConstants.SPRING_MVC_VIEW_PREFIX));
-		resolver.setSuffix(env.getRequiredProperty(BmblbConstants.SPRING_MVC_VIEW_SUFFIX));
+		resolver.setPrefix(env
+				.getRequiredProperty(BmblbConstants.SPRING_MVC_VIEW_PREFIX));
+		resolver.setSuffix(env
+				.getRequiredProperty(BmblbConstants.SPRING_MVC_VIEW_SUFFIX));
 		resolver.setViewClass(JstlView.class);
 		return resolver;
 	}
-	
+
 	@Bean
-    public MailSenderHelper mailSenderHelper() {
-        return new MailSenderHelper();
-    }
+	public MailSenderHelper mailSenderHelper() {
+		return new MailSenderHelper();
+	}
+
 	@Bean
-    public MailSender mailsender() {
-        return new MailSenderImpl();
-    }
-	
+	public MailSender mailsender() {
+		return new MailSenderImpl();
+	}
+
 	@Bean
-    public ModuleControllerHelper moduleControllerHelper() {
-        return new ModuleControllerHelper();
-    }
-	
+	public ModuleControllerHelper moduleControllerHelper() {
+		return new ModuleControllerHelper();
+	}
+
 	@Bean
-    public VelocityEngine velocityEngine() {
+	public VelocityEngine velocityEngine() {
 		VelocityEngine ve = new VelocityEngine();
 		ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-		ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+		ve.setProperty("classpath.resource.loader.class",
+				ClasspathResourceLoader.class.getName());
 		ve.init();
 		return ve;
-    }
-	@Bean MySimpleUrlAuthenticationSuccessHandler mySimpleUrlAuthenticationSuccessHandler(){
-		return new MySimpleUrlAuthenticationSuccessHandler();
 	}
-	
-	@Bean MySimpleAuthenticationFailureHandler mySimpleAuthenticationFailureHandler(){
-		return new MySimpleAuthenticationFailureHandler();
-	}
-	
+
 	@Bean
-    public AccessDeniedHandler accessDeniedHandler() {
-        AccessDeniedHandlerImpl accessDeniedHandler = new AccessDeniedHandlerImpl();
-        accessDeniedHandler.setErrorPage("/unauth/fail/restrictedaccess");
-        return accessDeniedHandler;
-    }
-	
-	
+	BmblbAuthenticationSuccessHandler bmblbAuthenticationSuccessHandler() {
+		return new BmblbAuthenticationSuccessHandler();
+	}
+
+	@Bean
+	BmblbAuthenticationFailureHandler bmblbAuthenticationFailureHandler() {
+		return new BmblbAuthenticationFailureHandler();
+	}
+
+	@Bean
+	public AccessDeniedHandler accessDeniedHandler() {
+		AccessDeniedHandlerImpl accessDeniedHandler = new AccessDeniedHandlerImpl();
+		accessDeniedHandler.setErrorPage("/unauth/fail/restrictedaccess");
+		return accessDeniedHandler;
+	}
+
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
-    public PasswordEncoder passwordEncoder() {
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder;
-    }
-	
+	public PasswordEncoder passwordEncoder() {
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		return encoder;
+	}
+
 	@Bean(name = "localeResolver")
 	public LocaleResolver localeResolver() {
-	    CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
-	    cookieLocaleResolver.setDefaultLocale(Locale.ENGLISH);
-	    return cookieLocaleResolver;
+		CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
+		cookieLocaleResolver.setDefaultLocale(Locale.ENGLISH);
+		return cookieLocaleResolver;
 	}
+
 	@Bean(name = "messageSource")
 	public MessageSource messageSource() {
-	    ReloadableResourceBundleMessageSource messageSource =     new ReloadableResourceBundleMessageSource();
-	    messageSource.setBasename("classpath:messages");
-	    messageSource.setUseCodeAsDefaultMessage(true);
-	    messageSource.setDefaultEncoding("UTF-8");
-	    messageSource.setCacheSeconds(0);
-	    return messageSource;
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasename("classpath:messages");
+		messageSource.setUseCodeAsDefaultMessage(true);
+		messageSource.setDefaultEncoding("UTF-8");
+		messageSource.setCacheSeconds(0);
+		return messageSource;
 	}
-	 
+
+	// SPRING BOOT
+	/*
+	 * @Bean public MultipartConfigElement multipartConfigElement() {
+	 * MultipartConfigFactory factory = new MultipartConfigFactory();
+	 * factory.setMaxFileSize("20MB"); factory.setMaxRequestSize("20MB"); return
+	 * factory.createMultipartConfig(); }
+	 */
+
 }

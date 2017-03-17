@@ -43,7 +43,7 @@
 				</div><!-- /.sidebar-shortcuts -->
 
 				<ul class="nav nav-list">
-					<li class="hover">
+					<li class="bmblbnavstabs hover" id="index">
 						<a href="${contextPath}/index">
 							<i class="menu-icon fa fa-tachometer"></i>
 							<span class="menu-text"> Developer Zone </span>
@@ -51,7 +51,7 @@
 
 						<b class="arrow"></b>
 					</li>
-					<li class="hover">
+					<li class="bmblbnavstabs hover" id="reportBugByPManager">
 						<a href="${pageContext.request.contextPath}/auth/project/reportBugByPManager">
 							<i class="menu-icon fa fa-bug"></i>
 							<span class="menu-text"> Report a bug  </span>
@@ -60,7 +60,7 @@
 						<b class="arrow"></b>
 					</li>
 					
-					<li class="hover">
+					<li class="bmblbnavstabs hover" id="show-bug">
 						<a href="${pageContext.request.contextPath}/unauth/bug/show-bug">
 							<i class="menu-icon fa fa-eye"></i>
 							<span class="menu-text"> show bug  </span>
@@ -69,7 +69,7 @@
 						<b class="arrow"></b>
 					</li>
 
-					<li class="open hover">
+					<li class="bmblbnavstabs open hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-desktop"></i>
 							<span class="menu-text">
@@ -266,7 +266,7 @@
 						</ul>
 					</li>
 
-					<li class="hover">
+					<li class="bmblbnavstabs hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-list"></i>
 							<span class="menu-text"> View your bugs </span>
@@ -297,7 +297,7 @@
 						</ul>
 					</li>
 
-					<li class="hover">
+					<li class="bmblbnavstabs hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-pencil-square-o"></i>
 							<span class="menu-text"> View your subscriptions </span>
@@ -355,7 +355,7 @@
 						</ul>
 					</li>
 
-					<li class="hover">
+					<li class="bmblbnavstabs hover">
 						<a href="${contextPath}/widgets">
 							<i class="menu-icon fa fa-list-alt"></i>
 							<span class="menu-text"> Statistics </span>
@@ -364,7 +364,7 @@
 						<b class="arrow"></b>
 					</li>
 
-					<li class="hover">
+					<li class="bmblbnavstabs hover">
 						<a href="${contextPath}/calendar">
 							<i class="menu-icon fa fa-calendar"></i>
 
@@ -380,7 +380,7 @@
 						<b class="arrow"></b>
 					</li>
 
-					<li class="hover">
+					<li class="bmblbnavstabs hover">
 						<a href="${contextPath}/gallery">
 							<i class="menu-icon fa fa-picture-o"></i>
 							<span class="menu-text"> Saved searches </span>
@@ -389,7 +389,7 @@
 						<b class="arrow"></b>
 					</li>
 
-					<li class="hover">
+					<li class="bmblbnavstabs hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-tag"></i>
 							<span class="menu-text"> Tags </span>
@@ -474,7 +474,7 @@
 						</ul>
 					</li>
 
-					<li class="hover">
+					<li class="bmblbnavstabs hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-file-o"></i>
 

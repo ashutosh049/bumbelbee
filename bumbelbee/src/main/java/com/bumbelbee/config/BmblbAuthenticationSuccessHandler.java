@@ -1,4 +1,4 @@
-package com.bumbelbee.security;
+package com.bumbelbee.config;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -11,20 +11,16 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
 
 import com.bumbelbee.service.SecurityRole;
 import com.bumbelbee.service.UserService;
 
 
-@Component(value = "mySimpleUrlAuthenticationSuccessHandler")
-public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class BmblbAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
@@ -32,7 +28,7 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
     @Autowired
 	private UserService userService;
 
-    public MySimpleUrlAuthenticationSuccessHandler() {
+    public BmblbAuthenticationSuccessHandler() {
         super();
     }
 

@@ -12,6 +12,8 @@ public interface BugService {
 
 	Bug findById(long id);
 	
+	Bug update(Bug bug);
+	
 	
 
 }

@@ -2,6 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <fmt:setBundle basename="messages" var="msg" />
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
@@ -10,11 +11,12 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta charset="utf-8" />
-		<title>Form Wizard - BumbelBee</title>
+		<title>BumbelBee</title>
 
 		<meta name="description" content="and Validation" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
+		
 		<!-- bootstrap & fontawesome -->
 		<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="${contextPath}/resources/font-awesome/4.5.0/css/font-awesome.min.css" />
@@ -53,6 +55,29 @@
 		<script src="${contextPath}/resources/js/respond.min.js"></script>
 		<![endif]-->
 			
+		<!-- blueim-FILE-UPLOAD -->
+<%-- 		<link rel="stylesheet" href="${contextPath}/resources/css/style.css">
+		<link rel="stylesheet" href="${contextPath}/resources/css/jquery.fileupload.css"> --%>
+		
+		<!-- Bootstrap File upload -->
+<%-- 		<link href="${contextPath}/resources/bootstrap-fileupload/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" /> --%>
+
+<!-- filer -->
+	<link href="${contextPath}/resources/filer/css/jquery.filer.css" rel="stylesheet">
+		
+<!-- <style type="text/css">
+.bar {
+    height: 18px;
+    background: green;
+}
+</style> -->		
+<style type="text/css">
+.page-content {
+	background-image: url(${contextPath}/resources/images/avatars/bg_1.gif);
+	background-repeat: repeat;
+	background-attachment: scroll;
+}
+</style>
 	</head>
 
 	<body class="no-skin">
@@ -241,8 +266,8 @@
 										</div>
 									</div> -->
 
-									<!-- form:start -->
-									<form class="form-horizontal " id="validation-form" method="get">
+									<!-- REPORT-BUG FORM -->
+										<form class="form-horizontal message-form" role="form" id="bug-report-form" method="post" enctype="multipart/form-data" action="${contextPath}/filerUpload">
 										<input type="hidden" id="_csrf" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 										<div class="form-group">
 											<div class="row">
@@ -251,8 +276,8 @@
 		
 													<div class="col-xs-12 col-sm-9">
 														<select id="project" name="project" class="select2" data-placeholder="Select a project">
+															<option value="ABC" selected>ABC</option>
 															<c:forEach var="project" items="${projectList}">
-																<option value="">&nbsp;</option>
 																<option value="${project.projectId}">${project.projectName}</option>
 															</c:forEach>
 														</select>
@@ -272,9 +297,9 @@
 											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="state">OS/Platform :</label>
 
 											<div class="col-xs-12 col-sm-9">
-												<select id="os" name="os" class="select2" data-placeholder="Choose OS...">
+												<select id="platform" name="platform" class="select2" data-placeholder="Choose OS...">
 														<option value="">&nbsp;</option>
-														<option value="ANY">Any</option>
+														<option value="ANY" selected>Any</option>
 														<option value="LINUX">Linux</option>
 														<option value="WINDOWS">Windows</option>
 														<option value="MACOS">Mac OS</option>
@@ -300,13 +325,43 @@
 											<div class="col-xs-12 col-sm-9">
 												<select id="severity" name="severity" class="select2" data-placeholder="Choose severity...">
 													<option value="">&nbsp;</option>
-													<option value="BLOCKER">BLOCKER</option>
+													<option value="BLOCKER" selected>BLOCKER</option>
 													<option value="CRITICAL">CRITICAL</option>
 													<option value="MAJOR">MAJOR</option>
 													<option value="NORMAL">NORMAL</option>
 													<option value="MINOR">MINOR</option>
 													<option value="TRIVIAL">TRIVIAL</option>
 													<option value="ENHANCEMENT">ENHANCEMENT</option>
+												</select>
+											</div>
+										</div>
+												<div class="col-sm-4 pull-right">
+													<small class="text-muted blue">What is the severity level of the bug?
+													</small>
+												</div>
+											</div>
+										</div>
+										<div class="hr hr-dotted"></div>
+										
+										<!-- status -->
+										<div class="form-group">
+											<div class="row">
+												<div class="col-sm-8">
+											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="state">Status :</label>
+
+											<div class="col-xs-12 col-sm-9">
+												<select id="status" name="status" class="select2" data-placeholder="Choose severity...">
+													<option value="OPEN">OPEN</option>
+													<option value="CLOSED" disabled="disabled">CLOSED</option>
+													<option value="REOPEN" disabled="disabled">RE-OPEN</option>
+													<option value="INPROGRESS" disabled="disabled">IN-PROGRESS</option>
+													<option value="RESOLVED" disabled="disabled">RESOLVED</option>
+													<option value="HOLD" disabled="disabled">HOLD</option>
+													<option value="REQUIREDINFO" disabled="disabled">REQUIRED-INFO</option>
+													<option value="LIMITATION" disabled="disabled">LIMITATION</option>
+													<option value="VERIFIED" disabled="disabled">VERIFIED</option>
+													<option value="ACCEPTED" disabled="disabled">ACCEPTED</option>
+													<option value="FUNCTIONALDEVIATION" disabled="disabled">FUNCTIONAL-DEVIATION</option>
 												</select>
 											</div>
 										</div>
@@ -360,67 +415,23 @@
 										<div class="form-group">
 											<div class="row">
 												<div class="col-sm-8">
-											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="comment">Description :</label>
-
-											<div class="col-sm-8">
-											<div class="widget-box widget-color-blue">
-
-											<div class="widget-body">
-												<div class="widget-main no-padding">
-													<textarea id="description" name="description" data-provide="markdown" data-iconlibrary="fa" rows="10"># (GitHub-Flavored) Markdown Editor
-
-Basic useful feature list:
-
- * Ctrl+S / Cmd+S to save the file
- * Ctrl+Shift+S / Cmd+Shift+S to choose to save as Markdown or HTML
- * Drag and drop a file into here to load it
- * File contents are saved in the URL so you can share files
-
-
-I'm no good at writing sample / filler text, so go write something yourself.
-
-Look, a list!
-
- * foo
- * bar
- * baz
-
-And here's some code! :+1:
-
-```javascript
-$(function(){
-  $('div').html('I am a div.');
-});
-```
-
-This is [on GitHub](https://github.com/jbt/markdown-editor) so let me know if I've b0rked it somewhere.
-
-
-Props to Mr. Doob and his [code editor](http://mrdoob.com/projects/code-editor/), from which
-the inspiration to this, and some handy implementation hints, came.
-
-### Stuff used to make this:
-
- * [markdown-it](https://github.com/markdown-it/markdown-it) for Markdown parsing
- * [CodeMirror](http://codemirror.net/) for the awesome syntax-highlighted editor
- * [highlight.js](http://softwaremaniacs.org/soft/highlight/en/) for syntax highlighting in output code blocks
- * [js-deflate](https://github.com/dankogai/js-deflate) for gzipping of data to make it fit in URLs</textarea>
+													<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="comment">Description :</label>
+													<div class="col-sm-8">
+														<div class="widget-box widget-color-blue">
+															<div class="widget-body">
+																<div class="widget-main no-padding">
+																	<textarea id="description" name="description" data-provide="markdown" data-iconlibrary="fa" rows="10">Markdown Editor</textarea>
+																</div>
+															</div>
+														</div>
+													</div>
 												</div>
-
-											</div>
-										</div>
-										</div>
-										</div>
 												<div class="col-sm-4 pull-right">
 													<small class="text-muted blue">Markdown uses a very simple formatting syntax to accomplish the same thing that HTML or Rich Text Formatting does. The difference is that it's simpler than HTML and you don't have to worry about opening and closing tags. It also doesn't have all of the menus associated with most text editing programs. To format text, Markdown uses punctuation and characters you're already familiar with.
-
-<br>For example, to create a header you use hashtags. So, "# HEADLINE" is a large header. "## HEADLINE" would be a little smaller, "### HEADLINE" would be smaller still.
-
-<br>Want to make a bulleted list? Just type in a "-" "+" or "*" before any item and the list is created automatically. No need to start it, end it, or deal with funky formatting.
-
-<br>To add emphasis, you can either use an asterisk (*really?*) for italics, or two asterisks for bold (**really!**).
-
-<br>Press <i class="ace-icon fa fa-expand"></i> icon to edit in full-screen view and press escape or <i class="ace-icon fa fa-compress"></i> to return.
+														<br>For example, to create a header you use hashtags. So, "# HEADLINE" is a large header. "## HEADLINE" would be a little smaller, "### HEADLINE" would be smaller still.
+														<br>Want to make a bulleted list? Just type in a "-" "+" or "*" before any item and the list is created automatically. No need to start it, end it, or deal with funky formatting.
+														<br>To add emphasis, you can either use an asterisk (*really?*) for italics, or two asterisks for bold (**really!**).
+														<br>Press <i class="ace-icon fa fa-expand"></i> icon to edit in full-screen view and press escape or <i class="ace-icon fa fa-compress"></i> to return.
 													</small>
 												</div>
 											</div>
@@ -498,21 +509,65 @@ the inspiration to this, and some handy implementation hints, came.
 												</div>
 											</div>
 										</div>
-										<div class="hr hr-dotted"></div>
-																				
+										</form>
+										<!-- ATTACHEMENTS -->
+								
+								<!-- <div class="form-group">
+									<div class="row">
+										<div class="col-sm-8">
+											<label
+												class="control-label col-xs-12 col-sm-3 no-padding-right"
+												for="name">Attachment :</label>
+
+											<div class="col-sm-9">
+										        <input id="attachmentData" type="file" name="attachmentData[]" multiple>
+											</div>
+										</div>
+										<div class="col-sm-4 pull-right">
+											<small class="text-muted blue">Provide the initials
+												for the bug as a title. </small>
+										</div>
+									</div>
+								</div> -->
+								<!-- uploadForm -->
+								
+								<div class="space-8"></div>
+								<div class="space-8"></div>
+								<div class="space-8"></div>
+								<div class="row">
+									<div class="col-sm-8">
+										<label class="control-label col-xs-8 col-sm-3 no-padding-right" >
+											<h4 class="blue">
+												<i class="ace-icon fa fa-file"></i>	
+												<span class="lbl">Attachment :</span>
+											</h4>
+										</label>
+										<form:form id="myFormUpload" modelAttribute="uploadForm" action="${contextPath}/myFormUpload" enctype="multipart/form-data">
+											<div class="form-group">
+												<div class="col-xs-8">
+														<form:hidden path="bugId" id="bugId"/>
+														<form:input multiple="multiple" type="file" path="myfile" id="id-input-file-3" />
+												</div>
+											</div>
+										</form:form>
+									</div>
+								</div>
+								
+								<div class="hr hr-dotted"></div>
+																		
+										<!-- ACTIPN BUTTONS -->		
 										<div class="form-group center">
 											<button class="btn" type="reset">
 												<i class="ace-icon fa fa-refresh"></i>
 												Reset all
 											</button>
 
-											<button class="btn btn-success btn-next" data-last="Finish" type="submit">
+											<button class="btn btn-success btn-next" data-last="Finish" type="submit" id="bugFireSbmt" onclick="">
 												Fire
 												<i class="ace-icon fa fa-send icon-on-right"></i>
 											</button>
 										</div>
-									</form>
-									<!-- form:end -->
+									<!-- <!-- REPORT-BUG FORM:end -->
 
 								<!-- PAGE CONTENT ENDS -->
 							</div><!-- /.col -->
@@ -571,7 +626,61 @@ the inspiration to this, and some handy implementation hints, came.
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
 			jQuery(function($) {
-			
+				$('.bmblbnavstabs').removeClass('active');
+				$('#reportBugByPManager').addClass('active');
+				var attachments=[];
+	 			/* $('#id-input-file-3').ace_file_input({
+					style: 'well',
+					btn_choose: 'Drop files here or click to choose',
+					btn_change: null,
+					no_icon: 'ace-icon fa fa-cloud-upload',
+					droppable: true,
+					thumbnail: 'small',
+					whitelist:'gif|png|jpg|jpeg',
+					blacklist:'exe|php|txt|json|pdf',
+					before_change:function(files, dropped) {
+						$.each( files, function( key, value ) {
+							  console.log(key+"________");
+							  var attachment={
+									  attachmentId:null,
+									  attachmentType:value['type'],
+							          attachmentName:value['name'],
+							          attachmentData:value
+							  };
+							  attachments.push(attachment);
+							});
+						return true;
+					},
+					preview_error : function(filename, error_code) {
+						alert(filename+" : "+error_code);
+					}
+				}); */
+				var attachmentcount = 0;
+				$('#id-input-file-3').ace_file_input({
+					style: 'well',
+					btn_choose: 'Drop files here or click to choose',
+					btn_change: null,
+					no_icon: 'ace-icon fa fa-cloud-upload',
+					droppable: true,
+					thumbnail: 'small',
+					whitelist:'gif|png|jpg|jpeg',
+					blacklist:'exe|php|txt|json|pdf',
+					before_change:function(files, dropped) {
+						$.each( files, function( key, value ) {
+							  attachments.push(value);
+							  attachmentcount = key;
+							});
+						return true;
+					},
+					preview_error : function(filename, error_code) {
+						alert(filename+" : "+error_code);
+					}
+				});
+				
+	 			$('#bugFireSbmt').click(function(e){
+	 				$('#bug-report-form').submit();
+	 			});
+				
 				$('[data-rel=tooltip]').tooltip();
 			
 				$('.select2').css('width','200px').select2({allowClear:true})
@@ -588,7 +697,7 @@ the inspiration to this, and some handy implementation hints, came.
 				})
 				.on('actionclicked.fu.wizard' , function(e, info){
 					if(info.step == 3 && $validation) {
-						if(!$('#validation-form').valid()) e.preventDefault();
+						if(!$('#bug-report-form').valid()) e.preventDefault();
 					}
 				})
 				//.on('changed.fu.wizard', function() {
@@ -607,54 +716,33 @@ the inspiration to this, and some handy implementation hints, came.
 					//e.preventDefault();//this will prevent clicking and selecting steps
 				});
 			
-			
-				//jump to a step
-				/**
-				var wizard = $('#fuelux-wizard-container').data('fu.wizard')
-				wizard.currentStep = 3;
-				wizard.setState();
-				*/
-			
-				//determine selected step
-				//wizard.selectedItem().step
-			
-			
-			
-				//hide or show the other form which requires validation
-				//this is for demo only, you usullay want just one form in your application
-				$('#skip-validation').removeAttr('checked').on('click', function(){
-					$validation = this.checked;
-					if(this.checked) {
-						$('#sample-form').hide();
-						$('#validation-form').removeClass('hide');
-					}
-					else {
-						$('#validation-form').addClass('hide');
-						$('#sample-form').show();
-					}
-				})
-			
-			
-			
-				//documentation : http://docs.jquery.com/Plugins/Validation/validate
-			
-			
 				$.mask.definitions['~']='[+-]';
 				$('#phone').mask('(999) 999-9999');
 			
 				jQuery.validator.addMethod("phone", function (value, element) {
 					return this.optional(element) || /^\(\d{3}\) \d{3}\-\d{4}( x\d{1,6})?$/.test(value);
 				}, "Enter a valid phone number.");
-			
-				$('#validation-form').submit(function(e){
+				
+				
+				
+				jQuery.validator.addMethod("invalidemail", function (value, element) {
+					var emailReg = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+					return this.optional(element) || emailReg.test(value);
+				}, "Enter a valid emmail address.");
+				
+				
+				$('#bug-report-form').submit(function(e){
 					 e.preventDefault();
-					 $('#validation-form').validate({
+					 $('#bug-report-form').validate({
 							errorElement: 'div',
 							errorClass: 'help-block',
 							focusInvalid: false,
 							ignore: "",
 							rules: {
 								project: {
+									required: true
+								},
+								status: {
 									required: true
 								},
 								synopsis: {
@@ -667,7 +755,7 @@ the inspiration to this, and some handy implementation hints, came.
 								version: {
 									required: true
 								},
-								os: {
+								platform: {
 									required: true
 								},
 								securityvulnerability: {
@@ -675,22 +763,33 @@ the inspiration to this, and some handy implementation hints, came.
 								},
 								description: {
 									required: true
+								},
+								assignto: {
+									required: true
+								},
+								ccto: {
+									required: true
 								}
 							},
 							
 							messages: {
 								project: {
-									required: "Please provide a valid email."
+									required: "Please select the project."
+								},
+								status: {
+									required: "Please provide current bug status."
 								},
 								synopsis: {
 									required: "Please specify the bug title."
 								},
 								severity: "Please choose severity.",
 								version: "Please specify bug reported in verion",
-								os: "Please choose OS Platform.",
+								platform: "Please choose OS Platform.",
 								securityvulnerability: "Please select if vulnerable.",
 								description: "Please specify the defect description.",
-								assignto: "Please specify atleast 1 assignee email address.",
+								assignto: {
+										required :"Please specify atleast 1 assignee email address.",
+									},
 								ccto: "Please specify atleast 1 email address."
 							},
 					
@@ -720,90 +819,35 @@ the inspiration to this, and some handy implementation hints, came.
 							},
 					
 							submitHandler: function (form) {
-								alert("valid");
-								
-							
-								
-							},
-							invalidHandler: function (form) {
-								alert("in-valid");
-							}
-						});
-					 
-					 if($('#validation-form').valid()){
-						// submit
-						alert("submitting....");
-						 var project =  $("select#project option:checked").val();
-							var synopsis = $("#synopsis").val();
-							var severity = $("select#severity option:checked").val();
-							var version  = $("#version").val();
-							var platform = $("select#os option:checked").val();
-							var securityvulnerability = $('input[name=securityvulnerability]:checked').val();
-							var description = $("#description").val();
-							var assignto=$("#assignto").val();
-							var ccto=$("#ccto").val();
-								
-								var bug = {
-														"bugId" : null,
-														"projectId" : project,
-														"synopsis" : synopsis,
-														"severity" : severity,
-														"version" : version,
-														"platform" : platform,
-														"securityVulnerability" : securityvulnerability,
-														"description" : description,
-														"assignto" : assignto,
-														"ccto" : ccto
-												};
-								console.log("before sending...");
-								$.each( bug, function( key, value ) {
-									  console.log(key+" : "+value);
-									});
-								
 								var context = "<%=request.getContextPath()%>";
-								
- 								$.ajaxSetup({
-						            headers:
-						            { 'X-CSRF-TOKEN': $("#_csrf").val() }
-						        }); 
-								 var formData = {
-										  "bug": {
-												"bugId" : null,
-												"projectId" : project,
-												"synopsis" : synopsis,
-												"severity" : severity,
-												"version" : version,
-												"platform" : platform,
-												"securityVulnerability" : securityvulnerability,
-												"description" : description,
-												"assignto" : assignto,
-												"ccto" : ccto
-										}
-										};
- 								$.ajax({
+								var formData = {		
+										projectId : $("select#project option:checked").val(),
+										synopsis : $("#synopsis").val(),
+										severity : $("select#severity option:checked").val(),
+										status:$("select#status option:checked").val(),
+										version : $("#version").val(),
+										platform : $("select#os option:checked").val(),
+										securityVulnerability : $('input[name=securityvulnerability]:checked').val(),
+										description :$("#description").data('markdown').parseContent(),
+										assignto: $("#assignto").val().split(","),
+										ccto :$("#ccto").val().split(",")
+									};
+								$.ajax({
+									method : "POST",
 									type : "POST",
-									url : ''+context+"/auth/project/reportBug?_csrf="+$("#_csrf").val(),
-									data : JSON.stringify({"bugId" : null,
-															"projectId" : $("select#project option:checked").val(),
-															"synopsis" : $("#synopsis").val(),
-															"severity" : $("select#severity option:checked").val(),
-															"version" : $("#version").val(),
-															"platform" : $("select#os option:checked").val(),
-															"securityVulnerability" : $('input[name=securityvulnerability]:checked').val(),
-															"description" :$("#description").data('markdown').parseContent(),
-															"assignto" : $("#assignto").val().split(","),
-															"ccto" :$("#ccto").val().split(",")
-													}),
-									contentType : 'application/json; charset=utf-8',
+									url : ''+context+"/filerUpload/"+attachmentcount+"?${_csrf.parameterName}=${_csrf.token}",
+									data : JSON.stringify(formData),
+// 									headers: {'Content-Type': 'multipart/mixed;boundary=gc0p4Jq0M2Yt08jU534c0p'},
+// 								    cache:false,
+// 								    processData:false,
+// 								    contentType:false,
+									contentType : 'application/json; charset=UTF-8',
 									dataType : 'json',
-									success : function(bug) {
+									success : function(bugId) {
 										if(bug== null){
 											console.log('something went wrong.. try again');
 										}
-										console.log("\n--success---\n");
-										$.each( bug, function( key, value ) {
-											  console.log(key+" : "+value);
-											});
+										console.log("\n--bug no :"+bugId+"---\n");
 									},
 									error : function(xhr) {
 										console.log('something went wrong.. try again\n'+xhr);
@@ -811,12 +855,29 @@ the inspiration to this, and some handy implementation hints, came.
 											  console.log(key+" : "+value);
 											});
 									},
-									success:(function(bug){
+									success:(function(bugId){
 										var context = "<%=request.getContextPath()%>";
-										window.location=context+'/unauth/bug/show-bug?Id='+bug.bugId;
+// 										window.location=context+'/unauth/bug/show-bug?Id='+bug.bugId;
+										$('#bugId').val(bugId);
+										$('#myFormUpload').submit();
 										  
 									})
 								});
+								
+								
+							},
+							invalidHandler: function (form) {
+								//alert("in-valid");
+							}
+						});
+					 
+					 if($('#bug-report-form').valid()){
+							//$.ajaxSetup({headers:{'X-CSRF-TOKEN': $("#_csrf").val()}}); 
+							
+							//read attachments
+							/* $(document).on('change','#attachmentData',function () {
+							  sendFile(this.files[0]);
+							}); */
 					 }else{
 						e.preventDefault();
 					 }
@@ -829,18 +890,6 @@ the inspiration to this, and some handy implementation hints, came.
 				$('#modal-wizard-container').ace_wizard();
 				$('#modal-wizard .wizard-actions .btn[data-dismiss=modal]').removeAttr('disabled');
 				
-				
-				/**
-				$('#date').datepicker({autoclose:true}).on('changeDate', function(ev) {
-					$(this).closest('form').validate().element($(this));
-				});
-				
-				$('#mychosen').chosen().on('change', function(ev) {
-					$(this).closest('form').validate().element($(this));
-				});
-				*/
-				
-				
 				$(document).one('ajaxloadstart.page', function(e) {
 					//in ajax mode, remove remaining elements before leaving page
 					$('[class*=select2]').remove();
@@ -849,30 +898,11 @@ the inspiration to this, and some handy implementation hints, came.
 		</script>
 		<script type="text/javascript">
 			jQuery(function($) {
-				/* MARKDOWN */
-				
-				/* $('textarea[data-provide="markdown"]').each(function(){
-			        var $this = $(this);
-
-					if ($this.data('markdown')) {
-					  $this.data('markdown').showEditor();
-					}
-					else $this.markdown({
-						savable:true
-					});
-					
-					$this.parent().find('.btn').addClass('btn-white');
-			    }); */
-				
-				//editables on first profile page
 				$.fn.editable.defaults.mode = 'inline';
 				$.fn.editableform.loading = "<div class='editableform-loading'><i class='ace-icon fa fa-spinner fa-spin fa-2x light-blue'></i></div>";
 			    $.fn.editableform.buttons = '<button type="submit" class="btn btn-info editable-submit"><i class="ace-icon fa fa-check"></i></button>'+
 			                                '<button type="button" class="btn editable-cancel"><i class="ace-icon fa fa-times"></i></button>';    
 				
-				//editables 
-				
-				//text editable
 			    $('#username')
 				.editable({
 					type: 'text',
@@ -889,7 +919,7 @@ the inspiration to this, and some handy implementation hints, came.
 					name : 'about',
 			
 					wysiwyg : {
-						//css : {'max-width':'300px'}
+// 						css : {'max-width':'600px'}
 					},
 					success: function(response, newValue) {
 					}
@@ -898,12 +928,6 @@ the inspiration to this, and some handy implementation hints, came.
 			 //tags
 			 var context = "<%=request.getContextPath()%>";
 			 var url=context+'/unauth/getAllEmailIds';
-			/*  $.get(url)
-		     	.done(function (result_items) {
-		      	process(result_items);
-		      	console.log(result_items);
-			 }); */
-			 
 			 var tag_input_assignto = $('#assignto');
 			 var tag_input_ccto = $('#ccto');
 			 
@@ -911,15 +935,9 @@ the inspiration to this, and some handy implementation hints, came.
 					tag_input_assignto.tag(
 					  {
 						placeholder:tag_input_assignto.attr('placeholder'),
-						//source: ace.vars['US_STATES'],
 						source: function(query, process) {
-						 /*  $.ajax({url: 'remote_source.php?q='+encodeURIComponent(query)})
-						  .done(function(result_items){
-							process(result_items);
-						  }); */
 							$.get(url).done(function (result_items) {
 					      	process(result_items);
-					      	console.log(result_items);
 						 });
 						}
 						
@@ -929,22 +947,15 @@ the inspiration to this, and some handy implementation hints, came.
 					tag_input_ccto.tag(
 							  {
 								placeholder:tag_input_assignto.attr('placeholder'),
-								//source: ace.vars['US_STATES'],
 								source: function(query, process) {
-								 /*  $.ajax({url: 'remote_source.php?q='+encodeURIComponent(query)})
-								  .done(function(result_items){
-									process(result_items);
-								  }); */
 									$.get(url).done(function (result_items) {
 							      	process(result_items);
-							      	console.log(result_items);
 								 });
 								}
 								
 							  }
 							);
 			
-					//programmatically add/remove a tag
 					var $tag_obj_assignto = $('#assignto').data('tag');
 					$tag_obj_assignto.add('to.someone@email.com');
 					var index = $tag_obj_assignto.inValues('some tag');
