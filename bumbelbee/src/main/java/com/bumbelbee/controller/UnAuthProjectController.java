@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.FieldError;
@@ -42,6 +43,7 @@ import com.bumbelbee.repository.ProjectRepository;
 import com.bumbelbee.repository.UserRepository;
 import com.bumbelbee.service.AttachmentService;
 import com.bumbelbee.service.BugService;
+import com.bumbelbee.service.BugStatus;
 import com.bumbelbee.service.CommentService;
 import com.bumbelbee.service.ProjectService;
 import com.bumbelbee.service.SecurityService;
@@ -119,6 +121,22 @@ public class UnAuthProjectController {
 		return new ModelAndView("show-bug-not-found");
 	}
 	
+	/*@RequestMapping(value = "/show-bug-all", method = RequestMethod.GET)
+	public ModelAndView showBugAll(final Model model, final Locale locale, HttpSession session) {
+		
+		User userInContext = (User)session.getAttribute("userInContext");
+
+		Page<Bug> searchPage = bugService.findAllByUserId(0);
+		
+		 int current = searchPage.getNumber() + 1;
+		 int begin = Math.max(1, current - 5);
+		 int end = Math.min(begin + 10, searchPage.getTotalPages());
+		
+		model.addAttribute("userInContext",userInContext);
+		return new ModelAndView("show-bug");
+		
+	}*/
+	
 	@RequestMapping(value = "/download/attachment/{attachment_id}", method = RequestMethod.GET)
     public void doDownload(HttpServletRequest request,  HttpServletResponse response,@PathVariable("attachment_id") long attachment_id) throws IOException {
         Attachment att = attachmentService.findById(attachment_id);
@@ -158,5 +176,25 @@ public class UnAuthProjectController {
     		return new ModelAndView("redirect:/unauth/bug/show-bug?Id="+bug.getBugId());
     	}
     	return new ModelAndView("error");
+    }
+	
+	@RequestMapping(value = "/update/status/{bugId}/{currentStatus}/{newStatus}", method = RequestMethod.POST)
+    public String updateStatus(HttpServletRequest request,  HttpServletResponse response,@PathVariable("bugId") long bugId,
+    		@PathVariable("currentStatus") String currentStatus,@PathVariable("newStatus") String newStatus) throws IOException {
+		if(currentStatus!=null && newStatus!=null){
+			Bug bug = bugService.findById(bugId);
+			if(bug!=null){
+				if(bug.getStatus().equals(BugStatus.valueOf(currentStatus))){
+					bug.setStatus(BugStatus.valueOf(newStatus));
+					int updated = bugRepository.updateBugStatus(bug.getStatus(),bug.getBugId());
+					if(updated==1){
+						return "SUCCESS";
+					}
+					return "ERROR";
+				}
+				return "COLLISION";
+			}
+		}
+		return "ERROR";
     }
 }

@@ -1,25 +1,30 @@
 package com.bumbelbee.controller;
 
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bumbelbee.formbacking.bean.UploadForm;
+import com.bumbelbee.model.Bug;
 //import org.springframework.security.core.userdetails.User;
 import com.bumbelbee.model.User;
-
+import com.bumbelbee.repository.BugRepository;
+import com.bumbelbee.service.BugService;
 import com.bumbelbee.service.UserService;
 
 /**
@@ -38,11 +43,62 @@ public class NavController {
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	BugService bugService;
+	@Autowired
+	BugRepository bugRepository;
 
 	@RequestMapping({ "/index" })
 	public ModelAndView index(final Model model, final Locale locale, HttpSession session) {
         User userInContext = (User)session.getAttribute("userInContext");
         model.addAttribute("userInContext", userInContext);
+        
+        Integer pageNumber = 1;
+        int resultSize=10;
+        String sortByParam="bugId";
+//		Page<Bug> searchPage = bugService.findAllByUserId(pageNumber,resultSize,sortByParam);
+		Page<Bug> searchPageByUser = bugService.findAllByUserId(userInContext.getId() , pageNumber,resultSize,sortByParam);
+		
+		List<Bug> bugList =  searchPageByUser.getContent();
+		
+		 int current = searchPageByUser.getNumber() + 1;
+		 int begin = Math.max(1, current - 5);
+		 int end = Math.min(begin + 10, searchPageByUser.getTotalPages());
+		
+		model.addAttribute("userInContext",userInContext);
+		model.addAttribute("bugList",bugList);
+		model.addAttribute("searchPage", searchPageByUser);
+	    model.addAttribute("beginIndex", begin);
+	    model.addAttribute("endIndex", end);
+	    model.addAttribute("currentIndex", current);
+        
+		return new ModelAndView("index");
+	}
+	
+	@RequestMapping({ "/pages/{pageNumber}" })
+	public ModelAndView indexPageNumber(@PathVariable Integer pageNumber, final Model model, final Locale locale, HttpSession session) {
+        User userInContext = (User)session.getAttribute("userInContext");
+        model.addAttribute("userInContext", userInContext);
+        
+
+        int resultSize=4;
+        String sortByParam="bugId";
+//		Page<Bug> searchPage = bugService.findAllByUserId(pageNumber,resultSize,sortByParam);
+		Page<Bug> searchPageByUser = bugService.findAllByUserId(userInContext.getId() , pageNumber,resultSize,sortByParam);
+		
+		List<Bug> bugList =  searchPageByUser.getContent();
+		
+		 int current = searchPageByUser.getNumber() + 1;
+		 int begin = Math.max(1, current - 5);
+		 int end = Math.min(begin + 10, searchPageByUser.getTotalPages());
+		
+		model.addAttribute("userInContext",userInContext);
+		model.addAttribute("bugList",bugList);
+		model.addAttribute("searchPage", searchPageByUser);
+	    model.addAttribute("beginIndex", begin);
+	    model.addAttribute("endIndex", end);
+	    model.addAttribute("currentIndex", current);
+        
 		return new ModelAndView("index");
 	}
 	

@@ -932,17 +932,32 @@
 			 var tag_input_ccto = $('#ccto');
 			 
 				try{
-					tag_input_assignto.tag(
+					var tagElement = tag_input_assignto.tag(
 					  {
 						placeholder:tag_input_assignto.attr('placeholder'),
 						source: function(query, process) {
 							$.get(url).done(function (result_items) {
 					      	process(result_items);
 						 });
-						}
-						
+						},
+						allowDuplicates:false
 					  }
 					);
+					
+					/*  $('#assignto').on('added', function (e, value) {
+						var emailReg = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+			      		var isEmail = emailReg.test(value);
+						if(!isEmail){
+				      		var index = this.inValues(value);
+				      		console.log(value+"("+index+") : "+isEmail);
+				      		tagElement.siblings('.tag:eq(' + index + ')').remove();
+				      		tagElement.trigger('removed', [value]);
+						}
+					});
+					   
+				   $('#assignto').on('removed', function (e, value) {
+			      		console.log('removed trigerred...');
+					}); */
 					
 					tag_input_ccto.tag(
 							  {
@@ -958,6 +973,7 @@
 			
 					var $tag_obj_assignto = $('#assignto').data('tag');
 					$tag_obj_assignto.add('to.someone@email.com');
+					
 					var index = $tag_obj_assignto.inValues('some tag');
 					$tag_obj_assignto.remove(index);
 					
@@ -970,10 +986,10 @@
 				}
 				catch(e) {
 					//display a textarea for old IE, because it doesn't support this plugin or another one I tried!
-					tag_input_assignto.after('<textarea id="'+tag_input_assignto.attr('id')+'" name="'+tag_input_assignto.attr('name')+'" rows="3">'+tag_input_assignto.val()+'</textarea>').remove();
+					/* tag_input_assignto.after('<textarea id="'+tag_input_assignto.attr('id')+'" name="'+tag_input_assignto.attr('name')+'" rows="3">'+tag_input_assignto.val()+'</textarea>').remove();
 					tag_input_ccto.after('<textarea id="'+tag_input_ccto.attr('id')+'" name="'+tag_input_ccto.attr('name')+'" rows="3">'+tag_input_ccto.val()+'</textarea>').remove();
 					autosize($('#assignto'));
-					autosize($('#ccto'));
+					autosize($('#ccto')); */
 				}finally{
 					$('div.tags').css( "width", "auto" );
 				}

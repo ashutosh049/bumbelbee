@@ -1182,7 +1182,7 @@
 														</a>
 
 														<a href="#" data-action="collapse">
-															<i class="ace-icon fa fa-plus" data-icon-show="fa-plus" data-icon-hide="fa-minus"></i>
+															<i class="ace-icon fa fa-chevron-down" data-icon-show="fa-chevron-down" data-icon-hide="fa-chevron-up"></i>
 														</a>
 
 														<a href="#" data-action="close">

@@ -3,6 +3,12 @@ package com.bumbelbee.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,10 +17,13 @@ import com.bumbelbee.repository.BugRepository;
 import com.bumbelbee.service.BugService;
 
 @Service
+@Transactional
 public class BugServiceImpl implements BugService {
 
 	@Autowired
 	BugRepository bugRepository;
+	
+	private static final int PAGE_SIZE = 3;
 	
 	public Bug save(Bug bug) {
 		return bugRepository.save(bug);
@@ -24,12 +33,11 @@ public class BugServiceImpl implements BugService {
 		return bugRepository.findAll();
 	}
 
-	@Transactional
+	
 	public Bug findById(long bugId) {
 		return bugRepository.findOne(bugId);
 	}
 
-	@Transactional
 	public Bug update(Bug bug) {
 		Bug updatingBug=bugRepository.findOne(bug.getBugId());
 		if(updatingBug!=null){
@@ -48,5 +56,19 @@ public class BugServiceImpl implements BugService {
 		}
 		return updatingBug;
 	}
+	
+	public Page<Bug> findAllByUserId(Integer pageNumber, int resultSize, String sortByParam){
+		PageRequest pageRequest = new PageRequest(pageNumber-1, resultSize, Sort.Direction.ASC, sortByParam);
+		Page<Bug>  searchList = bugRepository.findAll(pageRequest);
+		return searchList;
+	}
+	
+	public Page<Bug> findAllByUserId(long userId, Integer pageNumber, int resultSize, String sortByParam){
+		PageRequest pageRequest = new PageRequest(pageNumber-1, resultSize, Sort.Direction.ASC, sortByParam);
+		Page<Bug>  searchList = bugRepository.findAllByUserId(userId, pageRequest);
+		return searchList;
+	}
+	
+	
 
 }

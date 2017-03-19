@@ -7,6 +7,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta charset="utf-8" />
@@ -54,7 +55,7 @@
 
 <!-- ace settings handler -->
 <script src="${contextPath}/resources/js/ace-extra.min.js"></script>
-
+<link rel="stylesheet" href="${contextPath}/resources/css/jquery.gritter.min.css" />
 <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 
 <!--[if lte IE 8]>
@@ -90,6 +91,74 @@
 
 
 				<div class="page-content" id="main_content">
+				
+				<div class="ace-settings-container" id="ace-settings-container">
+							<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+								<i class="ace-icon fa fa-cog bigger-130"></i>
+							</div>
+
+							<div class="ace-settings-box clearfix" id="ace-settings-box">
+								<div class="pull-left width-50">
+									<div class="ace-settings-item">
+										<div class="pull-left">
+											<select id="skin-colorpicker" class="hide">
+												<option data-skin="no-skin" value="#438EB9">#438EB9</option>
+												<option data-skin="skin-1" value="#222A2D">#222A2D</option>
+												<option data-skin="skin-2" value="#C6487E">#C6487E</option>
+												<option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+											</select>
+										</div>
+										<span>&nbsp; Choose Skin</span>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-navbar" autocomplete="off" />
+										<label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-sidebar" autocomplete="off" />
+										<label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-breadcrumbs" autocomplete="off" />
+										<label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" autocomplete="off" />
+										<label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-add-container" autocomplete="off" />
+										<label class="lbl" for="ace-settings-add-container">
+											Inside
+											<b>.container</b>
+										</label>
+									</div>
+								</div><!-- /.pull-left -->
+
+								<div class="pull-left width-50">
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover" autocomplete="off" />
+										<label class="lbl" for="ace-settings-hover"> Submenu on Hover</label>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact" autocomplete="off" />
+										<label class="lbl" for="ace-settings-compact"> Compact Sidebar</label>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight" autocomplete="off" />
+										<label class="lbl" for="ace-settings-highlight"> Alt. Active Item</label>
+									</div>
+								</div><!-- /.pull-left -->
+							</div><!-- /.ace-settings-box -->
+						</div>
+				
 					<div class="row">
 						<div class="col-xs-12">
 							<!-- PAGE CONTENT BEGINS -->
@@ -107,13 +176,10 @@
 													<span class="black">${searchedBug.synopsis}</span>
 												</a> 
 												<span class="widget-toolbar"> 
-												<c:if test="${searchedBug.status=='OPEN' || searchedBug.status=='REOPEN'}">
-<!-- 												<i class="ace-icon fa fa-bug bigger-110 green"></i> -->
-													<span class="label label-xlg label-danger arrowed-in">OPEN</span>												
-												</c:if>
+														<h4><span class="editable" id="bugStatus" bugid="${searchedBug.bugId}" currentstatus="${searchedBug.status}">${searchedBug.status}</span></h4>											
 												</span>
 												<span class="widget-toolbar black">
-													<h4><a href="${contextPath}/unauth/bug/show-bug?Id=${searchedBug.bugId}"><b>#${searchedBug.bugId}657896</b></a></h4>
+													<h4><a href="${contextPath}/unauth/bug/show-bug?Id=${searchedBug.bugId}"><b>#${searchedBug.bugId}</b></a></h4>
 												</span> 
 
 											</h3>
@@ -171,7 +237,7 @@
 											<div class="widget-main">
 												
 												<!-- Assigned to -->
-												<%-- <span class="blue">Assigned To:</span><br>
+												<span class="blue">Assigned To:</span><br>
 												<c:forEach var="asgn" items="${searchedBug.assignto}">
 													<span class="badge"><c:out value="${asgn}"/></span>
 												</c:forEach>
@@ -181,7 +247,7 @@
 													<span class="badge"><c:out value="${ccto}"/></span>
 												</c:forEach>
 												
-												<br><br><br> --%>
+												<br><br><br>
 												
 												<!-- DESCRIPTION-BODY -->
 												<p>${searchedBug.description}</p>
@@ -296,22 +362,21 @@
 																		<div class="message-attachment clearfix">
 																			&nbsp;
 																			<ul class="attachment-list pull-left list-unstyled">
-																				<c:if test="${comment.attachments != null}">
 																				<c:forEach items="${comment.attachments}" var="cmtattachment">
-																					<li>
-																					<a href="${contextPath}/unauth/bug/download/attachment/${cmtattachment.attachmentId}"
-																						class="attached-file">
-																						 <i class="ace-icon fa fa-paperclip bigger-110"></i> 
-																						 <span
-																							class="attached-name">${cmtattachment.attachmentName}</span>
-																					</a> 
-																					<span class="action-buttons"> <a
-																							href="${contextPath}/unauth/bug/download/attachment/${attachment.attachmentId}">
-																								<i class="ace-icon fa fa-download bigger-125 gray"></i>
-																						</a>
-																					</span></li>
+																					<c:if test="${cmtattachment.attachmentName != ''}">
+																						<li>
+																							<a href="${contextPath}/unauth/bug/download/attachment/${cmtattachment.attachmentId}" class="attached-file">
+																								 <i class="ace-icon fa fa-paperclip bigger-110"></i> 
+																								 <span class="attached-name">${cmtattachment.attachmentName}</span>
+																							</a> 
+																							<span class="action-buttons"> 
+																								<a href="${contextPath}/unauth/bug/download/attachment/${attachment.attachmentId}">
+																										<i class="ace-icon fa fa-download bigger-125 gray"></i>
+																								</a>
+																							</span>
+																						</li>																					
+																					</c:if>
 																				</c:forEach>
-																				</c:if>
 																			</ul>
 																		</div>
 																	</div>
@@ -441,6 +506,8 @@
 	<script src="${contextPath}/resources/js/jquery-ui.custom.min.js"></script>
 	<script src="${contextPath}/resources/js/jquery.ui.touch-punch.min.js"></script>
 	<script src="${contextPath}/resources/js/holder.min.js"></script>
+	
+	<script src="${contextPath}/resources/js/jquery.gritter.min.js"></script>
 
 	<script type="text/javascript">
 		jQuery(function($) {
@@ -689,6 +756,73 @@
 				$("#description").val(desc);
 				$('#bugcommentform').submit();
 			});
+		});
+	</script>
+	<script type="text/javascript">
+		jQuery(function($) {
+			
+			var statusall = [];
+		    $.each({ 
+		    		"OPEN": "OPEN", 
+		    		"CLOSED": "CLOSED", 
+		    		"REOPEN": "REOPEN", 
+		    		"INPROGRESS": "IN-PROGRESS", 
+		    		"RESOLVED": "RESOLVED",
+		    		"HOLD": "HOLD",
+		    		"REQUIREDINFO": "REQUIRED-INFO",
+		    		"LIMITATION": "LIMITATION",
+		    		"VERIFIED": "VERIFIED",
+		    		"ACCEPTED": "ACCEPTED",
+		    		"RESOLVED": "RESOLVED",
+		    		"FUNCTIONALDEVIATION": "FUNCTIONAL-DEVIATION",
+		    		}, 
+		    	function(k, v) {
+		    		statusall.push({id: k, text: v});
+		    });
+		    
+			var currentValue = "OPEN";
+		    var bugid = $('#bugStatus').attr('bugid');
+		    var currentstatus = $('#bugStatus').attr('currentstatus');
+			$('#bugStatus').editable({
+				type: 'select2',
+				value : 'OPEN',
+				//onblur:'ignore',
+		        source: statusall,
+				select2: {
+					'width': 200
+				},		
+				success: function(response, newstatus) {
+					if(currentValue == newstatus) return;
+					currentValue = newstatus;
+					 var context = "<%=request.getContextPath()%>";
+					 var url=context+'/unauth/bug/update/status/'+bugid+'/'+currentstatus+'/'+newstatus+'?${_csrf.parameterName}=${_csrf.token}';
+					$.post(url).done(function (result) {
+				      	if(result=='SUCCESS'){
+					      	$.gritter.add({
+								title : '<i class="ace-icon fa fa-check green"> Status updated successful!</i> ',
+								text : '<a href="#" class="blue"><u>Bug#'+bugid+'</u></a>  changed to <b>'+newstatus+'</b>',
+								sticky : true,
+								class_name : 'gritter-light'
+							});				      		
+				      	}else if(result=='COLLISION'){
+				      		$.gritter.add({
+								title: '<i class="ace-icon fa fa-exclamation-triangle bigger-120"></i> Mid air collision!',
+								text: 'Your changes can not be saved.Mid air collision detected.Try refresing the page.<br><u><a href="#" class="white">Read more..</a></u>',
+								sticky: true,
+								class_name: 'gritter-warning'
+							});
+				      	}else if(result=='ERROR'){
+				      		$.gritter.add({
+								title: '<i class="ace-icon fa fa-exclamation-triangle bigger-120"></i> Something went wrong!',
+								text: 'There seems to be problem updating status of <a href="#" class="blue">#'+bugid+'. Please try again',
+								sticky: true,
+								class_name: 'gritter-error gritter-light'
+							});
+				      	} 
+
+					 });
+				}
+		    });
 			
 		});
 	</script>

@@ -12,7 +12,7 @@
 					try{ace.settings.loadState('sidebar')}catch(e){}
 				</script>
 
-				<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+				<!-- <div class="sidebar-shortcuts" id="sidebar-shortcuts">
 					<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
 						<button class="btn btn-success">
 							<i class="ace-icon fa fa-signal"></i>
@@ -40,7 +40,8 @@
 
 						<span class="btn btn-danger"></span>
 					</div>
-				</div><!-- /.sidebar-shortcuts -->
+				</div> -->
+				<!-- /.sidebar-shortcuts -->
 
 				<ul class="nav nav-list">
 					<li class="bmblbnavstabs hover" id="index">
@@ -61,7 +62,7 @@
 					</li>
 					
 					<li class="bmblbnavstabs hover" id="show-bug">
-						<a href="${pageContext.request.contextPath}/unauth/bug/show-bug">
+						<a href="${pageContext.request.contextPath}/unauth/bug/show-bug-all">
 							<i class="menu-icon fa fa-eye"></i>
 							<span class="menu-text"> show bug  </span>
 						</a>
@@ -69,7 +70,7 @@
 						<b class="arrow"></b>
 					</li>
 
-					<li class="bmblbnavstabs open hover">
+					<%-- <li class="bmblbnavstabs open hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-desktop"></i>
 							<span class="menu-text">
@@ -264,9 +265,9 @@
 								</ul>
 							</li>
 						</ul>
-					</li>
+					</li> --%>
 
-					<li class="bmblbnavstabs hover">
+					<%-- <li class="bmblbnavstabs hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-list"></i>
 							<span class="menu-text"> View your bugs </span>
@@ -295,9 +296,9 @@
 								<b class="arrow"></b>
 							</li>
 						</ul>
-					</li>
+					</li> --%>
 
-					<li class="bmblbnavstabs hover">
+					<%-- <li class="bmblbnavstabs hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-pencil-square-o"></i>
 							<span class="menu-text"> View your subscriptions </span>
@@ -353,18 +354,18 @@
 								<b class="arrow"></b>
 							</li>
 						</ul>
-					</li>
+					</li> --%>
 
-					<li class="bmblbnavstabs hover">
+					<%-- <li class="bmblbnavstabs hover">
 						<a href="${contextPath}/widgets">
 							<i class="menu-icon fa fa-list-alt"></i>
 							<span class="menu-text"> Statistics </span>
 						</a>
 
 						<b class="arrow"></b>
-					</li>
+					</li> --%>
 
-					<li class="bmblbnavstabs hover">
+					<%-- <li class="bmblbnavstabs hover">
 						<a href="${contextPath}/calendar">
 							<i class="menu-icon fa fa-calendar"></i>
 
@@ -378,18 +379,18 @@
 						</a>
 
 						<b class="arrow"></b>
-					</li>
+					</li> --%>
 
-					<li class="bmblbnavstabs hover">
+					<%-- <li class="bmblbnavstabs hover">
 						<a href="${contextPath}/gallery">
 							<i class="menu-icon fa fa-picture-o"></i>
 							<span class="menu-text"> Saved searches </span>
 						</a>
 
 						<b class="arrow"></b>
-					</li>
+					</li> --%>
 
-					<li class="bmblbnavstabs hover">
+					<%-- <li class="bmblbnavstabs hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-tag"></i>
 							<span class="menu-text"> Tags </span>
@@ -472,9 +473,9 @@
 								<b class="arrow"></b>
 							</li>
 						</ul>
-					</li>
+					</li> --%>
 
-					<li class="bmblbnavstabs hover">
+					<%-- <li class="bmblbnavstabs hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-file-o"></i>
 
@@ -535,6 +536,6 @@
 								<b class="arrow"></b>
 							</li>
 						</ul>
-					</li>
+					</li> --%>
 				</ul><!-- /.nav-list -->
 			</div>

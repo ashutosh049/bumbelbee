@@ -1,3 +1,9 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<fmt:setBundle basename="messages" var="msg" />
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,41 +16,41 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
 <!-- bootstrap & fontawesome -->
-<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap.min.css" />
 <link rel="stylesheet"
-	href="resources/font-awesome/4.5.0/css/font-awesome.min.css" />
+	href="${contextPath}/resources/font-awesome/4.5.0/css/font-awesome.min.css" />
 
 <!-- page specific plugin styles -->
-<link rel="stylesheet" href="resources/css/select2.min.css" />
-<link rel="stylesheet" href="resources/css/jquery-ui.custom.min.css" />
+<link rel="stylesheet" href="${contextPath}/resources/css/select2.min.css" />
+<link rel="stylesheet" href="${contextPath}/resources/css/jquery-ui.custom.min.css" />
 
 <!-- text fonts -->
-<link rel="stylesheet" href="resources/css/fonts.googleapis.com.css" />
+<link rel="stylesheet" href="${contextPath}/resources/css/fonts.googleapis.com.css" />
 
 <!-- ace styles -->
-<link rel="stylesheet" href="resources/css/ace.min.css"
+<link rel="stylesheet" href="${contextPath}/resources/css/ace.min.css"
 	class="ace-main-stylesheet" id="main-ace-style" />
 
 <!--[if lte IE 9]>
-			<link rel="stylesheet" href="resources/css/ace-part2.min.css" class="ace-main-stylesheet" />
+			<link rel="stylesheet" href="${contextPath}/resources/css/ace-part2.min.css" class="ace-main-stylesheet" />
 		<![endif]-->
-<link rel="stylesheet" href="resources/css/ace-skins.min.css" />
-<link rel="stylesheet" href="resources/css/ace-rtl.min.css" />
+<link rel="stylesheet" href="${contextPath}/resources/css/ace-skins.min.css" />
+<link rel="stylesheet" href="${contextPath}/resources/css/ace-rtl.min.css" />
 
 <!--[if lte IE 9]>
-		  <link rel="stylesheet" href="resources/css/ace-ie.min.css" />
+		  <link rel="stylesheet" href="${contextPath}/resources/css/ace-ie.min.css" />
 		<![endif]-->
 
 <!-- inline styles related to this page -->
 
 <!-- ace settings handler -->
-<script src="resources/js/ace-extra.min.js"></script>
+<script src="${contextPath}/resources/js/ace-extra.min.js"></script>
 
 <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 
 <!--[if lte IE 8]>
-		<script src="resources/js/html5shiv.min.js"></script>
-		<script src="resources/js/respond.min.js"></script>
+		<script src="${contextPath}/resources/js/html5shiv.min.js"></script>
+		<script src="${contextPath}/resources/js/respond.min.js"></script>
 		<![endif]-->
 </head>
 
@@ -193,10 +199,10 @@
 									<div class="btn-toolbar inline middle no-margin">
 										<div id="toggle-result-page" data-toggle="buttons"
 											class="btn-group no-margin">
-											<label class="btn btn-sm btn-yellow active"> <span
-												class="bigger-110">1</span> <input type="radio" value="1" />
-											</label> <label class="btn btn-sm btn-yellow"> <span
-												class="bigger-110">2</span> <input type="radio" value="2" />
+											<label class="btn btn-sm active"> <span
+												class="bigger-110">Assigned to you</span> <input type="radio" value="1" />
+											</label> <label class="btn btn-sm"> <span
+												class="bigger-110">Advanced search</span> <input type="radio" value="2" />
 											</label>
 										</div>
 									</div>
@@ -207,6 +213,152 @@
 
 							<div>
 								<div class="row search-page" id="search-page-1">
+									<div class="col-xs-12 col-md-10 col-md-offset-1">
+										<div class="row">
+<!-- 											<div class="search-area no-margin-bottom"> -->
+											
+<!-- 											<div class="search-area well col-xs-12"> -->
+												
+												<div class="pull-left">
+													<form>
+														<div class="row">
+															<div class="col-md-12">
+																<div class="input-group">
+																	<input type="text" class="form-control" name="search" value="" placeholder="Search here.."/>
+																	<div class="input-group-btn">
+																		<button type="button" class="btn btn-primary btn-sm">
+																			<i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+																		</button>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</form>
+
+													<div class="space space-6"></div>
+													<span class="grey">Showing bugs assigned to you</span>
+												</div>
+												
+												<div class="pull-right">
+													<b class="text-primary">Sort by </b> &nbsp; 
+													<select>
+														<option>Severity</option>
+														<option>Newest First</option>
+														<option>Status</option>
+													</select>
+												</div>
+												
+<!-- 											</div> -->
+										</div>
+
+										<div class="search-results table-responsive">
+											<%-- <c:forEach var="bug" items="${bugList}">
+												<div class="search-result">
+													<h5 class="search-title">
+														<a href="#">#${bug.bugId}&nbsp;&nbsp;${bug.synopsis}</a>
+													</h5>
+													<a class="text-success" href="#">${bug.reportedBy}</a>
+
+													<p class="search-content">
+														${bug.createDate}
+													</p>
+												</div>
+											</c:forEach> --%>
+											
+											<table class="table table-hover">
+												<thead>
+												    <tr>
+												      <th>#Bug Id</th>
+												      <th>Summary</th>
+												      <th>Project</th>
+												      <th>Changed</th>
+												      <th>Status</th>
+<!-- 												      <th>action</th> -->
+												    </tr>
+												  </thead>
+												<c:forEach var="bug" items="${bugList}">
+													<c:choose>
+														<c:when test="${bug.status=='CLOSED'}">
+															<tr style="text-decoration: line-through;">
+														</c:when>
+														<c:otherwise>
+															<tr>	
+														</c:otherwise>
+													</c:choose>
+														<td>
+															<span class=""><a href="${contextPath}/unauth/bug/show-bug?Id=${bug.bugId}">#${bug.bugId}</a></span>
+														</td>
+														<td>
+															<span class=""> ${bug.synopsis}</span>
+														</td>
+														<td>
+															<span class=""> ${bug.projectId}</span>
+														</td>
+														<td>
+															<span class=""> 
+																<fmt:formatDate value="${bug.createDate}" pattern="EEE HH:mm yyyy-MM-dd " />
+															</span>
+														</td>
+														<td  width="">
+															<span class=""> ${bug.status}</span>
+														</td>
+														<td>
+														</td>
+													</tr>
+												</c:forEach>
+											</table>
+										</div>
+										
+										<div class="search-area text-center">
+											<c:url var="firstUrl" value="/pages/1" />
+											<c:url var="lastUrl" value="/pages/${searchPage.totalPages}" />
+											<c:url var="prevUrl" value="/pages/${currentIndex - 1}" />
+											<c:url var="nextUrl" value="/pages/${currentIndex + 1}" />
+
+												<ul class="pagination">
+													<c:choose>
+														<c:when test="${currentIndex == 1}">
+															<li class="disabled"><a href="#">&lt;&lt;</a></li>
+															<li class="disabled"><a href="#">&lt;</a></li>
+														</c:when>
+														<c:otherwise>
+															<li><a href="${firstUrl}">&lt;&lt;</a></li>
+															<li><a href="${prevUrl}">&lt;</a></li>
+														</c:otherwise>
+													</c:choose>
+													<c:forEach var="i" begin="${beginIndex}" end="${endIndex}">
+														<c:url var="pageUrl" value="/pages/${i}" />
+														<c:choose>
+															<c:when test="${i == currentIndex}">
+																<li class="active"><a href="${pageUrl}"><c:out
+																			value="${i}" /></a></li>
+															</c:when>
+															<c:otherwise>
+																<li><a href="${pageUrl}"><c:out value="${i}" /></a></li>
+															</c:otherwise>
+														</c:choose>
+													</c:forEach>
+													<c:choose>
+														<c:when test="${currentIndex == searchPage.totalPages}">
+															<li class="disabled"><a href="#">&gt;</a></li>
+															<li class="disabled"><a href="#">&gt;&gt;</a></li>
+														</c:when>
+														<c:otherwise>
+															<li><a href="${nextUrl}">&gt;</a></li>
+															<li><a href="${lastUrl}">&gt;&gt;</a></li>
+														</c:otherwise>
+													</c:choose>
+												</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- PAGE CONTENT ENDS -->
+						</div>
+
+							<div class='hide'>
+								<div class="row search-page" id="search-page-2">
 									<div class="col-xs-12">
 										<div class="row">
 											<div class="col-xs-12 col-sm-3">
@@ -535,130 +687,7 @@
 								</div>
 							</div>
 
-							<div class="hide">
-								<div class="row search-page" id="search-page-2">
-									<div class="col-xs-12 col-md-10 col-md-offset-1">
-										<div class="search-area well no-margin-bottom">
-											<form>
-												<div class="row">
-													<div class="col-md-6">
-														<div class="input-group">
-															<input type="text" class="form-control" name="search"
-																value="Hello World" />
-															<div class="input-group-btn">
-																<button type="button" class="btn btn-primary btn-sm">
-																	<i
-																		class="ace-icon fa fa-search icon-on-right bigger-110"></i>
-																</button>
-															</div>
-														</div>
-													</div>
-												</div>
-											</form>
-
-											<div class="space space-6"></div>
-											<span class="grey">About 263,000,000 results (0.74
-												seconds)</span>
-										</div>
-
-										<div class="search-results">
-											<div class="search-result">
-												<h5 class="search-title">
-													<a href="#">&quot;Hello, World!&quot; - Wikipedia, the
-														free encyclopedia</a>
-												</h5>
-												<a class="text-success" href="#">en.wikipedia.org</a>
-
-												<p class="search-content">
-													A &quot; <b>Hello</b> , <b>World</b> !&quot; program is a
-													computer program that outputs &quot; <b>Hello</b> , <b>World</b>!&quot;
-													(or some variant thereof) on a display device. Because it
-													is typically one of the ...
-												</p>
-											</div>
-
-											<div class="search-result">
-												<h5 class="search-title">
-													<a href="#">Hello World! - GNU Project</a>
-												</h5>
-												<a class="text-success" href="#">www.gnu.org</a>
-
-												<p class="search-content">
-													<b>Hello World</b> ! How the way people code “ <b>Hello
-														World</b>” varies depending on their age and job ...
-												</p>
-											</div>
-
-											<div class="search-result">
-												<h5 class="search-title">
-													<a href="#">HelloWorld.java - Introduction to
-														Programming in Java</a>
-												</h5>
-												<a class="text-success" href="#">introcs.cs.princeton.edu</a>
-
-												<p class="search-content">
-													<b>HelloWorld</b> code in Java. ... <b>HelloWorld</b>
-													.java. Below is the syntax highlighted version of <b>HelloWorld</b>.java
-													from ...
-												</p>
-											</div>
-
-											<div class="search-result">
-												<h5 class="search-title">
-													<a href="#">Hello, World! - Learn Python - Free
-														Interactive Python Tutorial</a>
-												</h5>
-												<a class="text-success" href="#">www.learnpython.org</a>
-
-												<p class="search-content">
-													<b>Hello</b> , <b>World</b>! Python is a very simple
-													language, and has a very straightforward syntax. It
-													encourages programmers to program without boilerplate
-													(prepared) ...
-												</p>
-											</div>
-
-											<div class="search-result">
-												<h5 class="search-title">
-													<a href="#">Hello World · GitHub Guides</a>
-												</h5>
-												<a class="text-success" href="#">guides.github.com</a>
-
-												<p class="search-content">
-													The <b>Hello World</b> project is a time-honored tradition
-													in computer programming. It is a simple exercise that gets
-													you started when learning something new. Let's get ...
-												</p>
-											</div>
-										</div>
-
-										<div class="search-area well well-sm text-center">
-											<ul class="pagination">
-												<li class="disabled"><a href="#"> <i
-														class="ace-icon fa fa-angle-double-left"></i>
-												</a></li>
-
-												<li class="active"><a href="#">1</a></li>
-
-												<li><a href="#">2</a></li>
-
-												<li><a href="#">3</a></li>
-
-												<li><a href="#">4</a></li>
-
-												<li><a href="#">5</a></li>
-
-												<li><a href="#"> <i
-														class="ace-icon fa fa-angle-double-right"></i>
-												</a></li>
-											</ul>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<!-- PAGE CONTENT ENDS -->
-						</div>
+							
 						<!-- /.col -->
 					</div>
 					<!-- /.row -->
@@ -680,12 +709,12 @@
 	<!-- basic scripts -->
 
 	<!--[if !IE]> -->
-	<script src="resources/js/jquery-2.1.4.min.js"></script>
+	<script src="${contextPath}/resources/js/jquery-2.1.4.min.js"></script>
 
 	<!-- <![endif]-->
 
 	<!--[if IE]>
-<script src="resources/js/jquery-1.11.3.min.js"></script>
+<script src="${contextPath}/resources/js/jquery-1.11.3.min.js"></script>
 <![endif]-->
 	<script type="text/javascript">
 		if ('ontouchstart' in document.documentElement)
@@ -699,18 +728,18 @@
 		});
 		
 	</script>
-	<script src="resources/js/bootstrap.min.js"></script>
+	<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 
 	<!-- page specific plugin scripts -->
-	<script src="resources/js/tree.min.js"></script>
-	<script src="resources/js/select2.min.js"></script>
-	<script src="resources/js/jquery-ui.custom.min.js"></script>
-	<script src="resources/js/jquery.ui.touch-punch.min.js"></script>
-	<script src="resources/js/holder.min.js"></script>
+	<script src="${contextPath}/resources/js/tree.min.js"></script>
+	<script src="${contextPath}/resources/js/select2.min.js"></script>
+	<script src="${contextPath}/resources/js/jquery-ui.custom.min.js"></script>
+	<script src="${contextPath}/resources/js/jquery.ui.touch-punch.min.js"></script>
+	<script src="${contextPath}/resources/js/holder.min.js"></script>
 
 	<!-- ace scripts -->
-	<script src="resources/js/ace-elements.min.js"></script>
-	<script src="resources/js/ace.min.js"></script>
+	<script src="${contextPath}/resources/js/ace-elements.min.js"></script>
+	<script src="${contextPath}/resources/js/ace.min.js"></script>
 
 	<!-- inline scripts related to this page -->
 	<script type="text/javascript">
