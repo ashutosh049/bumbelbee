@@ -13,14 +13,17 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bumbelbee.formbacking.bean.BugForm;
 import com.bumbelbee.formbacking.bean.UploadForm;
@@ -92,14 +96,14 @@ public class AuthProjectController {
 		return new ModelAndView("report-bug-page");
 	}
 
-	/*@RequestMapping(value = "/ceateProject", method = RequestMethod.POST)
+	@RequestMapping(value = "/ceateProject", method = RequestMethod.POST)
 	public ModelAndView ceateProject(ModelMap model, @ModelAttribute @Valid Project project, BindingResult result,
 			final RedirectAttributes redirectAttributes,  HttpSession session) {
 		    User userInContext = (User)session.getAttribute("userInContext");
 	        project.setUser(userInContext);
 	        projectService.save(project);
 		return new ModelAndView("redirect:reportBugByPManager");
-	}*/
+	}
 	
 	/*@RequestMapping(value = "/ceateProject", method = RequestMethod.POST)
 	public ModelAndView ceateProject(ModelMap model, @ModelAttribute @Valid ProjectAttachmentBean projectAttachmentBean, BindingResult result,

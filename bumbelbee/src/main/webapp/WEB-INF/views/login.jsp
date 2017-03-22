@@ -425,7 +425,7 @@
 					$("#forgot_form")[0].reset();
 					$.gritter.add({
 							title : '<i class="ace-icon fa fa-check green"></i> Password reset code sent!',
-							text : 'A password reset code has been sent to your registered email address. <a href="#" class="blue">Please confirm you email address </a>.',
+							text : 'A password reset code has been sent to your registered email address.Note this reset toke is valid for only 1 hour. <a href="#" class="blue">Please confirm you email address before the token expires.</a>.',
 							sticky : true,
 							class_name : 'gritter-light'
 						});

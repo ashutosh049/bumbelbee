@@ -400,7 +400,7 @@
 							$('#forgot-box').addClass('visible');
 							$.gritter.add({
 								title: 'Reset code sent!',
-								text: 'A password reset code has been sent to your registered email address. <a href="#" class="blue">Please confirm you email address </a>.',
+								text : 'A password reset code has been sent to your registered email address.Note this reset toke is valid for only 1 hour. <a href="#" class="blue">Please confirm you email address before the token expires.</a>.',
 								image: 'resources/images/avatars/bug-1.png',
 								sticky: false,
 								time: '',

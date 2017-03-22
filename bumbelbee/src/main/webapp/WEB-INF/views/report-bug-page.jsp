@@ -103,7 +103,7 @@
 								
 								<h4 class="pink">
 									<i class="ace-icon fa fa-bug green"></i>
-									<a href="#modal-form" role="button" class="blue" data-toggle="modal"> Report a bug</a>
+									<a href="#modal-form" role="button" class="blue" data-toggle="modal"> Add New Project</a>
 								</h4>
 								
 								<div class="profile-user-info profile-user-info-striped">
@@ -629,32 +629,7 @@
 				$('.bmblbnavstabs').removeClass('active');
 				$('#reportBugByPManager').addClass('active');
 				var attachments=[];
-	 			/* $('#id-input-file-3').ace_file_input({
-					style: 'well',
-					btn_choose: 'Drop files here or click to choose',
-					btn_change: null,
-					no_icon: 'ace-icon fa fa-cloud-upload',
-					droppable: true,
-					thumbnail: 'small',
-					whitelist:'gif|png|jpg|jpeg',
-					blacklist:'exe|php|txt|json|pdf',
-					before_change:function(files, dropped) {
-						$.each( files, function( key, value ) {
-							  console.log(key+"________");
-							  var attachment={
-									  attachmentId:null,
-									  attachmentType:value['type'],
-							          attachmentName:value['name'],
-							          attachmentData:value
-							  };
-							  attachments.push(attachment);
-							});
-						return true;
-					},
-					preview_error : function(filename, error_code) {
-						alert(filename+" : "+error_code);
-					}
-				}); */
+	 			
 				var attachmentcount = 0;
 				$('#id-input-file-3').ace_file_input({
 					style: 'well',
@@ -678,7 +653,9 @@
 				});
 				
 	 			$('#bugFireSbmt').click(function(e){
+	 				alert("button clicked.. form submitted....");
 	 				$('#bug-report-form').submit();
+	 				 $('#bug-report-form').validate();
 	 			});
 				
 				$('[data-rel=tooltip]').tooltip();
@@ -690,39 +667,6 @@
 			
 			
 				var $validation = true;
-				$('#fuelux-wizard-container')
-				.ace_wizard({
-					//step: 2 //optional argument. wizard will jump to step "2" at first
-					//buttons: '.wizard-actions:eq(0)'
-				})
-				.on('actionclicked.fu.wizard' , function(e, info){
-					if(info.step == 3 && $validation) {
-						if(!$('#bug-report-form').valid()) e.preventDefault();
-					}
-				})
-				//.on('changed.fu.wizard', function() {
-				//})
-				.on('finished.fu.wizard', function(e) {
-					bootbox.dialog({
-						message: "Thank you! Your information was successfully saved!", 
-						buttons: {
-							"success" : {
-								"label" : "OK",
-								"className" : "btn-sm btn-primary"
-							}
-						}
-					});
-				}).on('stepclick.fu.wizard', function(e){
-					//e.preventDefault();//this will prevent clicking and selecting steps
-				});
-			
-				$.mask.definitions['~']='[+-]';
-				$('#phone').mask('(999) 999-9999');
-			
-				jQuery.validator.addMethod("phone", function (value, element) {
-					return this.optional(element) || /^\(\d{3}\) \d{3}\-\d{4}( x\d{1,6})?$/.test(value);
-				}, "Enter a valid phone number.");
-				
 				
 				
 				jQuery.validator.addMethod("invalidemail", function (value, element) {
@@ -819,66 +763,66 @@
 							},
 					
 							submitHandler: function (form) {
-								var context = "<%=request.getContextPath()%>";
-								var formData = {		
-										projectId : $("select#project option:checked").val(),
-										synopsis : $("#synopsis").val(),
-										severity : $("select#severity option:checked").val(),
-										status:$("select#status option:checked").val(),
-										version : $("#version").val(),
-										platform : $("select#os option:checked").val(),
-										securityVulnerability : $('input[name=securityvulnerability]:checked').val(),
-										description :$("#description").data('markdown').parseContent(),
-										assignto: $("#assignto").val().split(","),
-										ccto :$("#ccto").val().split(",")
-									};
-								$.ajax({
-									method : "POST",
-									type : "POST",
-									url : ''+context+"/filerUpload/"+attachmentcount+"?${_csrf.parameterName}=${_csrf.token}",
-									data : JSON.stringify(formData),
-// 									headers: {'Content-Type': 'multipart/mixed;boundary=gc0p4Jq0M2Yt08jU534c0p'},
-// 								    cache:false,
-// 								    processData:false,
-// 								    contentType:false,
-									contentType : 'application/json; charset=UTF-8',
-									dataType : 'json',
-									success : function(bugId) {
-										if(bug== null){
-											console.log('something went wrong.. try again');
-										}
-										console.log("\n--bug no :"+bugId+"---\n");
-									},
-									error : function(xhr) {
-										console.log('something went wrong.. try again\n'+xhr);
-										$.each( xhr, function( key, value ) {
-											  console.log(key+" : "+value);
-											});
-									},
-									success:(function(bugId){
-										var context = "<%=request.getContextPath()%>";
-// 										window.location=context+'/unauth/bug/show-bug?Id='+bug.bugId;
-										$('#bugId').val(bugId);
-										$('#myFormUpload').submit();
-										  
-									})
-								});
-								
-								
+								alert("submitHandler....");
 							},
 							invalidHandler: function (form) {
 								//alert("in-valid");
+								alert("invalidHandler....");
 							}
 						});
 					 
 					 if($('#bug-report-form').valid()){
+						 alert("form valid....");
 							//$.ajaxSetup({headers:{'X-CSRF-TOKEN': $("#_csrf").val()}}); 
 							
 							//read attachments
 							/* $(document).on('change','#attachmentData',function () {
 							  sendFile(this.files[0]);
 							}); */
+
+						 var context = "<%=request.getContextPath()%>";
+							var formData = {		
+									projectId : $("select#project option:checked").val(),
+									synopsis : $("#synopsis").val(),
+									severity : $("select#severity option:checked").val(),
+									status:$("select#status option:checked").val(),
+									version : $("#version").val(),
+									platform : $("select#os option:checked").val(),
+									securityVulnerability : $('input[name=securityvulnerability]:checked').val(),
+									description :$("#description").data('markdown').parseContent(),
+									assignto: $("#assignto").val().split(","),
+									ccto :$("#ccto").val().split(",")
+								};
+							$.ajax({
+								method : "POST",
+								type : "POST",
+								url : ''+context+"/filerUpload/"+attachmentcount+"?${_csrf.parameterName}=${_csrf.token}",
+								data : JSON.stringify(formData),
+								contentType : 'application/json; charset=UTF-8',
+								dataType : 'json',
+								success : function(bugId) {
+									if(bug== null){
+										console.log('something went wrong.. try again');
+									}
+									console.log("\n--bug no :"+bugId+"---\n");
+								},
+								error : function(xhr) {
+									console.log('something went wrong.. try again\n'+xhr);
+									$.each( xhr, function( key, value ) {
+										  console.log(key+" : "+value);
+										});
+								},
+								success:(function(bugId){
+									var context = "<%=request.getContextPath()%>";
+//									window.location=context+'/unauth/bug/show-bug?Id='+bug.bugId;
+									$('#bugId').val(bugId);
+									$('#myFormUpload').submit();
+									  
+								})
+							});
+							
 					 }else{
+						 alert("form invalid....");
 						e.preventDefault();
 					 }
 					 
@@ -887,7 +831,6 @@
 				
 				
 				
-				$('#modal-wizard-container').ace_wizard();
 				$('#modal-wizard .wizard-actions .btn[data-dismiss=modal]').removeAttr('disabled');
 				
 				$(document).one('ajaxloadstart.page', function(e) {

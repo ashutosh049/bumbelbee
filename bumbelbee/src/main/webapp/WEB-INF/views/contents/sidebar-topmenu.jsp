@@ -61,14 +61,14 @@
 						<b class="arrow"></b>
 					</li>
 					
-					<li class="bmblbnavstabs hover" id="show-bug">
+					<%-- <li class="bmblbnavstabs hover" id="show-bug">
 						<a href="${pageContext.request.contextPath}/unauth/bug/show-bug-all">
 							<i class="menu-icon fa fa-eye"></i>
 							<span class="menu-text"> show bug  </span>
 						</a>
 
 						<b class="arrow"></b>
-					</li>
+					</li> --%>
 
 					<%-- <li class="bmblbnavstabs open hover">
 						<a href="#" class="dropdown-toggle">

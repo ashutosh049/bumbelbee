@@ -178,7 +178,7 @@ public class ModuleController {
 			UserPassword userPassword = userPwdService.findById(Id);
 			if (userPassword.getPasswordToken()!=null && userPassword.getPasswordToken().equals(passwordResetToken)) {
 				if (DateUtil.getDifferenceInMinutes(
-						userPassword.getPasswordTokenTimestamp(), new Date()) < -1) {
+						userPassword.getPasswordTokenTimestamp(), new Date()) >60) {
 					if (user.isActive()) {
 						ModelAndView mav = new ModelAndView("reset-password");
 						User passwordResetUSer = new User();

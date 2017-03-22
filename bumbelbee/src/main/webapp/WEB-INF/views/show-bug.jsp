@@ -311,17 +311,19 @@
 													&nbsp;
 													<ul class="attachment-list pull-left list-unstyled">
 														<c:forEach items="${attachmentList}" var="attachment">
-															<li>
-																<a href="${contextPath}/unauth/bug/download/attachment/${attachment.key}" class="attached-file"> 
-																	<i class="ace-icon fa fa-paperclip bigger-110"></i> 
-																	<span class="attached-name">${attachment.value}</span>
-																</a> 
-																<span class="action-buttons">
-																	 <a href="${contextPath}/unauth/bug/download/attachment/${attachment.key}"> 
-																	 	<i class="ace-icon fa fa-download bigger-125 gray"></i>
-																	</a>
-																</span>
-															</li>
+															<c:if test="${attachment.value!=''}">
+																<li>
+																	<a href="${contextPath}/unauth/bug/download/attachment/${attachment.key}" class="attached-file"> 
+																		<i class="ace-icon fa fa-paperclip bigger-110"></i> 
+																		<span class="attached-name">${attachment.value}</span>
+																	</a> 
+																	<span class="action-buttons">
+																		 <a href="${contextPath}/unauth/bug/download/attachment/${attachment.key}"> 
+																		 	<i class="ace-icon fa fa-download bigger-125 gray"></i>
+																		</a>
+																	</span>
+																</li>
+															</c:if>
 														</c:forEach>
 													</ul>
 													
